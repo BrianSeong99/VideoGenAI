@@ -5,7 +5,7 @@ An AI-driven tool that suggests relevant footage for certain frame descriptions 
 
 ### v0.1
 - [ ] [Backend]: Video file database, static database, support video preview (keyframes slideshow).
-- [ ] [Backend]: Relevant keyframe extractions of video files
+- [x] [Backend]: Relevant keyframe extractions of video files
 - [ ] [Backend]: Video footage content categorization, tagging, summary generation, meta data storing.
 - [ ] [Backend]: Indexer for video data indexing
 - [ ] [Backend]: NLP searching of relevant footage with indexer
