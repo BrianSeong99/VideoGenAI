@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-Backend/cache/*
+videogen_backend/cache/*
 
 # C extensions
 *.so
