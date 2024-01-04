@@ -1,7 +1,8 @@
 [project]
 name = "videogen_backend"
 dependencies = [
-    "flask"
+    "flask",
+    "cloudinary",
 ]
 
 [build-system]

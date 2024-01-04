@@ -1,7 +1,8 @@
-import pinecone    
+import pinecone
+from config import PINECONE_KEY, PINECONE_ENV, PINECONE_INDEX_NAME 
 
 pinecone.init(      
-	api_key='46a39a53-b884-4cf9-9516-ed27b297eaef',      
-	environment='gcp-starter'      
+	api_key=PINECONE_KEY,      
+	environment=PINECONE_ENV     
 )      
-index = pinecone.Index('video-gen')
+index = pinecone.Index(PINECONE_INDEX_NAME)

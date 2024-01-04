@@ -1,11 +1,18 @@
 import os
 
 SECRET_KEY = os.urandom(32)
+DEBUG = True
+UPLOAD_FOLDER = 'cache/'
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-PINECONE_API_KEY = os.environ.get('PINECONE_KEY')
+# PINECONE
+PINECONE_KEY = os.environ.get('PINECONE_KEY')
+PINECONE_ENV = os.environ.get('PINECONE_ENV')
+PINECONE_INDEX_NAME = os.environ.get('PINECONE_INDEX_NAME')
 
-DEBUG = True
 
-UPLOAD_FOLDER = 'cache/'
+# CLOUDINARY
+CLOUD_NAME = os.environ.get('CLOUD_NAME')
+API_KEY = os.environ.get('CLOUDINARY_API_KEY')
+API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
