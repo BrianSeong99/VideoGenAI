@@ -9,10 +9,10 @@ def upload_video_to_cloudinary(filepath):
     cloudinary_response = cloudinary.uploader.upload(
         filepath,
         resource_type = "video",
-        categorization = "google_video_tagging", 
-        auto_tagging = 0.4,
-        # categorization = "azure_video_indexer", 
-        # auto_tagging = 0.6
+        # categorization = "google_video_tagging", 
+        # auto_tagging = 0.4,
+        categorization = "azure_video_indexer", 
+        auto_tagging = 0.6,
         notification_url = "http://34.125.61.118:5000/v1/cloudinary_webhook"
     )
     print("++++++++++++++")
