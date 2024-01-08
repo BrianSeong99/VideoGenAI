@@ -8,14 +8,15 @@ pip install -e .
 
 To run backend:
 ```bash
-flask --app videogen_backend run
+cd videogen_backend
+flask --app app.py run 
 ```
 
 ## Features to includes
 
 ### v0.1
 Features:
-- [ ] [Backend]: Video file database, static database, support video preview (keyframes slideshow).
+- [x] [Backend]: Video file database, static database, support video preview (keyframes slideshow).
 - [x] [Backend]: Relevant keyframe extractions of video files
 - [ ] [Backend]: Video footage content categorization, tagging, summary generation, meta data storing.
 - [ ] [Backend]: Indexer for video data indexing

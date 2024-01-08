@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 videogen_backend/cache/*
+!videogen_backend/cache/__init__.py
 
 # C extensions
 *.so
