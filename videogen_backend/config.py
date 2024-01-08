@@ -2,7 +2,7 @@ import os
 
 SECRET_KEY = os.urandom(32)
 DEBUG = True
-UPLOAD_FOLDER = 'cache/'
+UPLOAD_FOLDER = 'tmp/'
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 

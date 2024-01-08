@@ -31,7 +31,7 @@ def upload_video():
         # Upload to Cloudinary
         cloudinary_response = upload_video_to_cloudinary(filepath)
         # get_video_tags(cloudinary_response['public_id'])
-        # Save to local cache
+        # Save to local cache tmp folder
         # result = keyframe_extractor.extract_keyframes(app.config['UPLOAD_FOLDER'], filename)
         resp = Response(
             # response=str(result),

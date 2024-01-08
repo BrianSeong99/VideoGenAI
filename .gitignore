@@ -3,8 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-videogen_backend/cache/*
-!videogen_backend/cache/__init__.py
+videogen_backend/tmp/*
+!videogen_backend/tmp/__init__.py
 
 # C extensions
 *.so
