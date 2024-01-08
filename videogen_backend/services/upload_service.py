@@ -4,11 +4,13 @@ from utils import keyframe_extractor
 from werkzeug.utils import secure_filename
 import os
 import time
+import json
 from models.cloudinary_model import upload_video_to_cloudinary, get_video_tags
 
 def cloudinary_webhook():
     data = request.json
-    print(data)
+    pretty_data = json.dumps(data, indent=4, sort_keys=True)
+    print(pretty_data)
     return Response(
             response="Hello World!",
             status=200,
