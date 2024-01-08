@@ -3,3 +3,4 @@ Flask==3.0.0
 pinecone-client==2.2.4
 video-kf==0.0.4
 opencv-python==4.8.1.78
+python-dotenv==1.0.0
