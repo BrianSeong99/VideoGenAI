@@ -9,8 +9,7 @@ from models.cloudinary_model import upload_video_to_cloudinary, get_video_tags
 
 def cloudinary_webhook():
     data = request.json
-    pretty_data = json.dumps(data, indent=4, sort_keys=True)
-    print(pretty_data)
+    print(data)
     return Response(
             response="Hello World!",
             status=200,
