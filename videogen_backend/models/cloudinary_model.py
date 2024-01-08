@@ -13,7 +13,7 @@ def upload_video_to_cloudinary(filepath):
         auto_tagging = 0.4,
         # categorization = "azure_video_indexer", 
         # auto_tagging = 0.6
-        notification_url = "https://real-badgers-shave.loca.lt/v1/cloudinary_webhook"
+        notification_url = "http://34.125.61.118:5000/v1/cloudinary_webhook"
     )
     print("++++++++++++++")
     print(cloudinary_response)

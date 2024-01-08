@@ -3,13 +3,15 @@ An AI-driven tool that suggests relevant footage for certain frame descriptions 
 
 Setup Environment:
 ```bash
-pip install -e .
+cd videogen_backend
+pip install -r requirements.txt
 ```
 
 To run backend:
 ```bash
 cd videogen_backend
-flask --app app.py run 
+flask --app app.py run # locally
+python3 -m flask --app app.py run --host 0.0.0.0 -p 5000 # server
 ```
 
 ## Features to includes
