@@ -14,7 +14,7 @@ def upload_video_to_cloudinary(filepath):
         # auto_tagging = 0.4,
         categorization = "azure_video_indexer", 
         auto_tagging = 0.6,
-        notification_url = "http://34.125.61.118:5000/v1/cloudinary_webhook"
+        notification_url = "http://34.125.61.118:5000/v1/upload/cloudinary_webhook"
     )
     print("++++++++++++++")
     print(cloudinary_response)
@@ -27,9 +27,9 @@ def upload_video_to_cloudinary(filepath):
     print("--------------")
     return cloudinary_response
 
-def get_video_tags(video_id):
+def get_video_info_from_cloudinary(public_id):
     return cloudinary.api.resource(
-        video_id,
+        public_id,
         resource_type = "video",
         categorization = "google_video_tagging", 
         auto_tagging = 0.4

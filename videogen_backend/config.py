@@ -11,7 +11,6 @@ PINECONE_KEY = os.environ.get('PINECONE_KEY')
 PINECONE_ENV = os.environ.get('PINECONE_ENV')
 PINECONE_INDEX_NAME = os.environ.get('PINECONE_INDEX_NAME')
 
-
 # CLOUDINARY
 CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
 API_KEY = os.environ.get('CLOUDINARY_API_KEY')

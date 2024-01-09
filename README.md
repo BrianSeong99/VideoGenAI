@@ -21,9 +21,8 @@ Features:
 - [x] [Backend]: Video file database, static database, support video preview (keyframes slideshow).
 - [x] [Backend]: Relevant keyframe extractions of video files
 - [x] [Backend]: Video footage content categorization, tagging, meta data storing.
-- [ ] [Backend]: Indexer for video data indexing
-- [ ] [Backend]: Generate Video Summary
-- [ ] [Backend]: NLP searching of relevant footage with indexer
+- [x] [Backend]: Indexer for video data indexing
+- [x] [Backend]: NLP searching of relevant footage with indexer
 - [ ] [Frontend]: Select and upload relevant footages
 - [ ] [Frontend]: Search page for relevant footage queries and preview.
 
@@ -40,10 +39,15 @@ Steps:
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 
 ### v0.3
+- [ ] [Backend]: Generate Video Summary
+
+### v0.4
 - [ ] [Backend]: Script to Video Footage selections in sequence generation
 - [ ] [Backend]: Auto Video length trimming functionality.
 - [ ] [Frontend]: Script & video gen result preview page.
 
-### v1
+### v0.5
 - [ ] [Backend]: User database and session management.
+- [ ] [Backend]: Video Indexer per user
+- [ ] [Frontend]: User Login and Profile Page
 

@@ -5,7 +5,10 @@ from werkzeug.utils import secure_filename
 import os
 import time
 import json
-from models.cloudinary_model import upload_video_to_cloudinary, get_video_tags
+from services.query_service import get_video_info
+from models.cloudinary_model import upload_video_to_cloudinary
+from models.openai_model import get_video_metadata_embedding
+from models.pinecone_model import upsert_video_to_pinecone
 from utils.tmp_folder_manager import save_file_to_tmp_folder, get_filenames, rename_file, delete_file_from_tmp_folder
 from config import CLOUD_NAME
 
@@ -69,7 +72,7 @@ def upload_video():
             mimetype='application/json'
         )
 
-def get_tags():
+def insert_video_metadata_to_indexer():
     public_id = request.args.get('public_id', None)
     if public_id is None:
         return Response(
@@ -77,22 +80,7 @@ def get_tags():
             status=400,
             mimetype='application/json'
         )
-    resp = get_video_tags(public_id)
-    return Response(
-        response=json.dumps(resp),
-        status=200,
-        mimetype='application/json'
-    )
-
-def insert_tags_to_indexer():
-    public_id = request.args.get('public_id', None)
-    if public_id is None:
-        return Response(
-            response="No public_id found",
-            status=400,
-            mimetype='application/json'
-        )
-    resp = get_video_tags(public_id)
+    resp = get_video_info(public_id)
     if 'tags' in resp and len(resp['tags']) > 0 and 'secure_url' in resp and 'version' in resp:
         tags = resp['tags']
         url = resp['secure_url']
@@ -103,9 +91,25 @@ def insert_tags_to_indexer():
             + '/v' \
             + str(resp['version']) \
             + '/'+ public_id
-        # print(tags, url, preview_url)
+        video_metadata = {
+            'tags': tags,
+            'url': url,
+            'preview_url': preview_url,
+            'public_id': public_id,
+            'version': resp['version'],
+            'summary': '' # TODO, add summary feature later.
+        }
+        metadata_embeddings = get_video_metadata_embedding(video_metadata)
+        status = upsert_video_to_pinecone(public_id, metadata_embeddings, video_metadata)
+        if status is False:
+            return Response(
+                response="Failed to insert video metadata to indexer",
+                status=400,
+                mimetype='application/json'
+            )
+        print("result", status)
         return Response(
-            response=json.dumps(resp),
+            response="Successfully inserted video metadata to indexer",
             status=200,
             mimetype='application/json'
         )
