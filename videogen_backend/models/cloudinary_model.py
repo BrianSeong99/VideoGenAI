@@ -6,6 +6,7 @@ from config import CLOUD_NAME, API_KEY, API_SECRET
 config = cloudinary.config(secure=True)
 
 def upload_video_to_cloudinary(filepath):
+    print(filepath)
     cloudinary_response = cloudinary.uploader.upload(
         filepath,
         resource_type = "video",

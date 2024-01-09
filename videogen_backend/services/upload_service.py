@@ -6,15 +6,16 @@ import os
 import time
 import json
 from models.cloudinary_model import upload_video_to_cloudinary, get_video_tags
+from utils.tmp_folder_manager import save_file_to_tmp_folder, get_filenames, rename_file, delete_file_from_tmp_folder
 
 def cloudinary_webhook():
     data = request.json
-    print(data)
-    return Response(
-            response="Hello World!",
-            status=200,
-            mimetype='application/json'
-        )
+    json_data = json.dumps(data)
+    public_id = json_data['public_id']
+    filenames_without_extension, filenames_with_extension = get_filenames(app.config['UPLOAD_FOLDER'])
+    if public_id in filenames_without_extension:
+        index = filenames_without_extension.index(public_id)
+        delete_file_from_tmp_folder(os.path.join(app.config['UPLOAD_FOLDER'], filenames_with_extension[index]))
 
 def upload_video():
     if 'video' not in request.files:
@@ -28,10 +29,12 @@ def upload_video():
     if file:  # If a file is present
         filename = str(int(time.time())) + '_' + secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
+        save_file_to_tmp_folder(file, filepath)
         # Upload to Cloudinary
         cloudinary_response = upload_video_to_cloudinary(filepath)
-        # get_video_tags(cloudinary_response['public_id'])
+        root, ext = os.path.splitext(filepath)
+        new_file_path = os.path.join(app.config['UPLOAD_FOLDER'], cloudinary_response['public_id'] + ext)
+        rename_file(filepath, new_file_path) # Rename file to match cloudinary public_id
         # Save to local cache tmp folder
         # result = keyframe_extractor.extract_keyframes(app.config['UPLOAD_FOLDER'], filename)
         resp = Response(
