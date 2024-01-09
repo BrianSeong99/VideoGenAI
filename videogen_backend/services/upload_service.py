@@ -18,6 +18,12 @@ def cloudinary_webhook():
             mimetype='application/json'
         )
     public_id = data['public_id']
+    if 'info_status' not in data or data['info_status'] != 'complete':
+        return Response(
+            response="info_status not found or not complete",
+            status=201,
+            mimetype='application/json'
+        )
     filenames_without_extension, filenames_with_extension = get_filenames(app.config['UPLOAD_FOLDER'])
     if public_id in filenames_without_extension:
         index = filenames_without_extension.index(public_id)
