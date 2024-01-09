@@ -33,4 +33,4 @@ def get_video_tags(video_id):
         resource_type = "video",
         categorization = "google_video_tagging", 
         auto_tagging = 0.4
-    )['info']['categorization']['google_video_tagging']['data']
+    )

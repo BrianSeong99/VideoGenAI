@@ -67,3 +67,18 @@ def upload_video():
             status=400,
             mimetype='application/json'
         )
+
+def get_tags():
+    public_id = request.args.get('public_id', None)
+    if public_id is None:
+        return Response(
+            response="No public_id found",
+            status=400,
+            mimetype='application/json'
+        )
+    tags_info = get_video_tags(public_id)
+    return Response(
+        response=json.dumps(tags_info),
+        status=200,
+        mimetype='application/json'
+    )
