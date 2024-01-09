@@ -10,8 +10,8 @@ from utils.tmp_folder_manager import save_file_to_tmp_folder, get_filenames, ren
 
 def cloudinary_webhook():
     data = request.json
-    json_data = json.dumps(data)
-    public_id = json_data['public_id']
+    print(data)
+    public_id = data['public_id']
     filenames_without_extension, filenames_with_extension = get_filenames(app.config['UPLOAD_FOLDER'])
     if public_id in filenames_without_extension:
         index = filenames_without_extension.index(public_id)
