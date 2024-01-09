@@ -11,11 +11,22 @@ from utils.tmp_folder_manager import save_file_to_tmp_folder, get_filenames, ren
 def cloudinary_webhook():
     data = request.json
     print(data)
+    if 'public_id' not in data:
+        return Response(
+            response="No public_id found",
+            status=400,
+            mimetype='application/json'
+        )
     public_id = data['public_id']
     filenames_without_extension, filenames_with_extension = get_filenames(app.config['UPLOAD_FOLDER'])
     if public_id in filenames_without_extension:
         index = filenames_without_extension.index(public_id)
         delete_file_from_tmp_folder(os.path.join(app.config['UPLOAD_FOLDER'], filenames_with_extension[index]))
+    return Response(
+        response="OK",
+        status=200,
+        mimetype='application/json'
+    )
 
 def upload_video():
     if 'video' not in request.files:
