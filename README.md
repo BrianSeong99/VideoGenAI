@@ -20,8 +20,9 @@ python3 -m flask --app app.py run --host 0.0.0.0 -p 5000 # server
 Features:
 - [x] [Backend]: Video file database, static database, support video preview (keyframes slideshow).
 - [x] [Backend]: Relevant keyframe extractions of video files
-- [ ] [Backend]: Video footage content categorization, tagging, summary generation, meta data storing.
+- [x] [Backend]: Video footage content categorization, tagging, meta data storing.
 - [ ] [Backend]: Indexer for video data indexing
+- [ ] [Backend]: Generate Video Summary
 - [ ] [Backend]: NLP searching of relevant footage with indexer
 - [ ] [Frontend]: Select and upload relevant footages
 - [ ] [Frontend]: Search page for relevant footage queries and preview.

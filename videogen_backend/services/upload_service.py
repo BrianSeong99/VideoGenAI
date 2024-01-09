@@ -7,6 +7,7 @@ import time
 import json
 from models.cloudinary_model import upload_video_to_cloudinary, get_video_tags
 from utils.tmp_folder_manager import save_file_to_tmp_folder, get_filenames, rename_file, delete_file_from_tmp_folder
+from config import CLOUD_NAME
 
 def cloudinary_webhook():
     data = request.json
@@ -76,9 +77,35 @@ def get_tags():
             status=400,
             mimetype='application/json'
         )
-    tags_info = get_video_tags(public_id)
+    resp = get_video_tags(public_id)
     return Response(
-        response=json.dumps(tags_info),
+        response=json.dumps(resp),
         status=200,
         mimetype='application/json'
     )
+
+def insert_tags_to_indexer():
+    public_id = request.args.get('public_id', None)
+    if public_id is None:
+        return Response(
+            response="No public_id found",
+            status=400,
+            mimetype='application/json'
+        )
+    resp = get_video_tags(public_id)
+    if 'tags' in resp and len(resp['tags']) > 0 and 'secure_url' in resp and 'version' in resp:
+        tags = resp['tags']
+        url = resp['secure_url']
+        preview_url = "https://res.cloudinary.com/" \
+            + CLOUD_NAME \
+            + "/video/upload/" \
+            + 'e_preview:duration_12:max_seg_2:min_seg_dur_1' \
+            + '/v' \
+            + str(resp['version']) \
+            + '/'+ public_id
+        # print(tags, url, preview_url)
+        return Response(
+            response=json.dumps(resp),
+            status=200,
+            mimetype='application/json'
+        )

@@ -8,3 +8,6 @@ def upload_video():
 
 def get_tags():
     return upload_service.get_tags()
+
+def insert_tags_to_indexer():
+    return upload_service.insert_tags_to_indexer()
