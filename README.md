@@ -24,7 +24,8 @@ Features:
 - [x] [Backend]: Indexer for video data indexing
 - [x] [Backend]: NLP searching of relevant footage with indexer
 - [ ] [Frontend]: Select and upload relevant footages
-- [ ] [Frontend]: Search page for relevant footage queries and preview.
+- [ ] [Frontend]: Query page for relevant footage queries and preview.
+- [ ] [Frontend]: Total Video Library Page
 
 Steps:
 1. Upload Video to Backend as Cache.

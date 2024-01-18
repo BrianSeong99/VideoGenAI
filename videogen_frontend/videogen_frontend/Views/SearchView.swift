@@ -13,19 +13,27 @@ struct SearchView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
     let searchControlller = UISearchController();
+    var AssetLibrary: [URL];
+    
+    init() {
+        AssetLibrary = [
+            URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!,
+            URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!,
+            URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!,
+            URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!
+        ]
+    }
     
     var body: some View {
         NavigationView {
-            Text("Select an item")
-                .searchable(text: $searchText)
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
+                ForEach(0..<AssetLibrary.count, id: \.self) { index in
+                    VideoTileView(videoURL: AssetLibrary[index])
+                }
+            }
+            .searchable(text: $searchText)
         }
-
     }
 }
 
