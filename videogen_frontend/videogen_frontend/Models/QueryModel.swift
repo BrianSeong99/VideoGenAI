@@ -39,7 +39,7 @@ class QueryModel: ObservableObject {
     @MainActor
     private func send(text: String) async {
         isInteracting = true
-        var sendQuery: String = text
+        let sendQuery: String = text
         var response: ResponseStruct = ResponseStruct(text: "", videoList: [])
         var responseError: String? = nil
         
@@ -60,7 +60,7 @@ class QueryModel: ObservableObject {
         
         isInteracting = false
         
-        var queryStruct = QueryStruct(
+        let queryStruct = QueryStruct(
             isInteracting: isInteracting,
             sendQuery: sendQuery,
             senderImage: "ProfilePicture",

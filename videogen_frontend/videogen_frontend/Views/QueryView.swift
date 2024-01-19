@@ -72,7 +72,7 @@ struct QueryView: View {
                     .progressViewStyle(.circular)
                     .padding()
                 #else
-                DotLoadingView()
+                DotLoadingComponent()
                     .frame(width: 60, height: 30)
                 #endif
                 

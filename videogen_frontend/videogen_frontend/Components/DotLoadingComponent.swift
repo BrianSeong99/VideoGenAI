@@ -1,5 +1,5 @@
 //
-//  DotLoadingView.swift
+//  DotLoadingComponent.swift
 //  videogen_frontend
 //
 //  Created by JIN WOO SEONG on 2024/1/17.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DotLoadingView: View {
+struct DotLoadingComponent: View {
     
     @State private var showCircle1 = false
     @State private var showCircle2 = false
@@ -53,9 +53,9 @@ struct DotLoadingView: View {
     }
 }
 
-struct DotLoadingView_Previews: PreviewProvider {
+struct DotLoadingComponent_Previews: PreviewProvider {
     static var previews: some View {
-        DotLoadingView()
+        DotLoadingComponent()
     }
 }
 
