@@ -11,18 +11,45 @@ import AVKit
 struct VideoTileComponent: View {
     let videoURL: URL
     
+    @State private var scaleFactor: CGFloat
     @State private var player: AVPlayer?
+    @State private var isMagnified: Bool
+    
+    public init(videoURL: URL) {
+        self.videoURL = videoURL
+        self._scaleFactor = State(initialValue: 1.0)
+        self._isMagnified = State(initialValue: false)
+    }
 
     var body: some View {
         // Small video tile view
-        VideoPlayer(player: player) {
-            // You can customize the video player controls here
-        }
-        .frame(width: 100, height: 100)
-        .cornerRadius(10)
+        VideoPlayer(player: player) {}
+        .scaledToFit()
+        .frame(width: 70 * scaleFactor, height: 70 * scaleFactor)
+        .cornerRadius(10 * scaleFactor)
         .onAppear {
             player = AVPlayer(url: videoURL)
         }
+        .contextMenu {
+            Button(action: {
+                print("Share Video")
+            }) {
+                Text("Share")
+                Image(systemName: "square.and.arrow.up")
+            }
+
+            Button(action: {
+                print("Save Video")
+            }) {
+                Text("Save")
+                Image(systemName: "square.and.arrow.down")
+            }
+        } preview: {
+            VideoPreviewComponent(videoURL: videoURL)
+                .animation(Animation.snappy(duration: 0.1), value: 0)
+                .zIndex(2)
+        }
+        .zIndex(isMagnified ? 1 : 0)
     }
 }
 

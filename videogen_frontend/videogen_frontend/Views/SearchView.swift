@@ -7,17 +7,10 @@
 
 import SwiftUI
 import CoreData
+import PhotosUI
+import Combine
 
 struct SearchView: View {
-    @State private var searchText: String = "Search"
-    @State private var selectedVideoIndex: Int = -1
-    @State private var isOverlayVisible: Bool = false
-    @State private var isZoomedIn: Bool = false
-    
-    @Environment(\.managedObjectContext) private var viewContext
-
-    let searchControlller = UISearchController();
-    var AssetLibrary: [URL];
     
     init() {
         AssetLibrary = [
@@ -49,57 +42,32 @@ struct SearchView: View {
         ]
     }
     
+    @State private var searchText: String = ""
+    @State private var selectedVideoIndexs: [Int] = []
+    @State private var isPickerPresented: Bool = false
+
+    @Environment(\.managedObjectContext) private var viewContext
+
+    let searchControlller = UISearchController();
+    var AssetLibrary: [URL];
+    
     var body: some View {
         ZStack() {
             VStack() {
                 SearchBarComponent(text: $searchText)
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 20) {
                         ForEach(0..<AssetLibrary.count, id: \.self) { index in
                             VideoTileComponent(videoURL: AssetLibrary[index])
-                                .onTapGesture {
-                                    selectedVideoIndex = index
-                                    print("Selected Video Index: \(selectedVideoIndex >= 0 ? "\(selectedVideoIndex)" : "None")")
-                                    isOverlayVisible = true
-                                    withAnimation {
-                                        isZoomedIn = true // Zoom in animation
-                                    }
-                                    
-                                }
                         }
                     }
                     .padding()
                 }
                 
-                Spacer() // Push the components to the top
+                Spacer()
             }
-            .onChange(of: selectedVideoIndex) { oldValue, newValue in
-                // Perform an action when selectedVideoIndex changes
-                let newIndex = newValue
-                print("Selected Video Index changed to: \(newIndex)")
-                // Perform your desired action here
-            }
-            
-            if isOverlayVisible {
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        withAnimation {
-                            isZoomedIn = false // Zoom out animation
-                        }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            selectedVideoIndex = -1
-                            isOverlayVisible = false
-                        }
-                    }
-            }
-            
-            
-            if selectedVideoIndex >= 0 {
-                VideoPreviewComponent(videoURL: AssetLibrary[selectedVideoIndex])
-                .scaleEffect(isZoomedIn ? 3.5 : 1.0)
-                .animation(Animation.easeInOut(duration: 0.2), value: 0)
-            }
+
+            UploadButtonComponent(isPickerPresented: $isPickerPresented)
         }
     }
 }

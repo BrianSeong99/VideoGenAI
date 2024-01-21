@@ -14,15 +14,24 @@ struct SearchBarComponent: View {
     var body: some View {
         HStack {
             TextField("Search", text: $text)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(8)
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(8)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray, lineWidth: 1)
+                )
             
             Button(action: {
-                // Perform search or clear search text
                 onSearchButtonTap()
             }) {
                 Image(systemName: "magnifyingglass")
+                    .padding(8)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
             }
         }
-        .padding()
+        .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
     }
 }

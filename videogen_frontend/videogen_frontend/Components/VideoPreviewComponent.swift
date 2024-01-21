@@ -18,7 +18,7 @@ struct VideoPreviewComponent: View {
         VideoPlayer(player: player) {
             // You can customize the video player controls here
         }
-        .frame(width: 100, height: 100)
+        .frame(width: 350, height: 350)
         .cornerRadius(10)
         .padding()
         .shadow(color: Color.black.opacity(0.3),

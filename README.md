@@ -23,9 +23,13 @@ Features:
 - [x] [Backend]: Video footage content categorization, tagging, meta data storing.
 - [x] [Backend]: Indexer for video data indexing
 - [x] [Backend]: NLP searching of relevant footage with indexer
+- [ ] [Backend]: Generate Video Summary
+- [ ] [Backend]: Save Current Editing Process in Database
 - [ ] [Frontend]: Select and upload relevant footages
 - [ ] [Frontend]: Query page for relevant footage queries and preview.
-- [ ] [Frontend]: Total Video Library Page
+- [x] [Frontend]: Total Video Library Page
+- [ ] [Frontend]: Video Timeline page for multiple video selection and place the selected footage in a desired sequence.
+- [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 
 Steps:
 1. Upload Video to Backend as Cache.
@@ -35,20 +39,11 @@ Steps:
 5. Search and return Pinecone DB Ranks
 6. Show in frontend
 
-### v0.2
-- [ ] [Frontend]: Video Timeline page for multiple video selection and place the selected footage in a desired sequence.
-- [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
-
-### v0.3
-- [ ] [Backend]: Generate Video Summary
-
-### v0.4
+### Future Scope
 - [ ] [Backend]: Script to Video Footage selections in sequence generation
 - [ ] [Backend]: Auto Video length trimming functionality.
-- [ ] [Frontend]: Script & video gen result preview page.
-
-### v0.5
 - [ ] [Backend]: User database and session management.
 - [ ] [Backend]: Video Indexer per user
+- [ ] [Frontend]: Script & video gen result preview page.
 - [ ] [Frontend]: User Login and Profile Page
 
