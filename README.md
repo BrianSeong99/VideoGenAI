@@ -26,12 +26,13 @@ Features:
 - [ ] [Backend]: Generate Video Summary
 - [ ] [Backend]: Save Current Editing Process in Database
 - [ ] [Frontend]: Select and upload relevant footages
-- [ ] [Frontend]: Query page for relevant footage queries and preview.
+- [x] [Frontend]: Query page for relevant footage queries and preview.
 - [x] [Frontend]: Total Video Library Page
-- [ ] [Frontend]: Video Timeline page for multiple video selection and place the selected footage in a desired sequence.
+- [ ] [Frontend]: Video Projects page to select desired project to work on.
+- [ ] [Frontend]: Video Timeline page for multiple video selection blocks and place the selected footage in a desired sequence.
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 
-Steps:
+Video Assets Pre-process Procedure:
 1. Upload Video to Backend as Cache.
 2. Upload video in the cache to Cloudinary, and store video id on Cloudinary.
 3. Extract Key frames, and Store Summary, Tags, and Cloudinary ID in the pinecone database.

@@ -22,15 +22,15 @@ struct SearchBarComponent: View {
                         .stroke(Color.gray, lineWidth: 1)
                 )
             
-            Button(action: {
-                onSearchButtonTap()
-            }) {
-                Image(systemName: "magnifyingglass")
-                    .padding(8)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .clipShape(Circle())
-            }
+//            Button(action: {
+//                onSearchButtonTap()
+//            }) {
+//                Image(systemName: "magnifyingglass")
+//                    .padding(8)
+//                    .background(Color.blue)
+//                    .foregroundColor(.white)
+//                    .clipShape(Circle())
+//            }
         }
         .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
     }
