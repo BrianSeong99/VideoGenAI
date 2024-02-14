@@ -1,5 +1,6 @@
 from services import upload_service
 from services import query_service
+from services import library_service
 
 # upload service controller
 
@@ -17,6 +18,11 @@ def get_video_info_controller():
 async def query_videos_controller():
     result = await query_service.query_videos()
     return result
+
+# library service controller
+
+def get_videos_controller():
+    return library_service.get_videos()
 
 # debug service controller
 

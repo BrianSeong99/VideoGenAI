@@ -31,6 +31,21 @@ def get_video_info_from_cloudinary(public_id):
     return cloudinary.api.resource(
         public_id,
         resource_type = "video",
-        categorization = "google_video_tagging", 
+        categorization = "azure_video_indexer", 
         auto_tagging = 0.4
     )
+
+def get_videos_from_cloudinary(next_cursor, limit):
+    result = None
+    if next_cursor is None:
+        result = cloudinary.api.resources(
+            resource_type = "video",
+            max_results = limit,
+        )
+    else:
+        result = cloudinary.api.resources(
+            resource_type = "video",
+            max_results = limit,
+            next_cursor = next_cursor
+        )
+    return result

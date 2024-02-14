@@ -17,26 +17,35 @@ python3 -m flask --app app.py run --host 0.0.0.0 -p 5000 # server
 ## Features to includes
 
 ### v0.1
-Features(Higher Priority):
+#### Features(Higher Priority):
+Infrastructure:
 - [x] [Backend]: Video file database, static database, support video preview (keyframes slideshow).
 - [x] [Backend]: Relevant keyframe extractions of video files
 - [x] [Backend]: Video footage content categorization, tagging, meta data storing.
 - [x] [Backend]: Indexer for video data indexing
 - [x] [Backend]: NLP searching of relevant footage with indexer
 - [ ] [Backend]: Generate Video Summary
-- [ ] [Backend]: Save Current Editing Process in Database
+
+Library Page:
+- [x] [Backend]: Return all assets for Library via Pagination
+- [x] [Backend]: Receive Multiple Video Upload Files
 - [x] [Frontend]: Select and upload a relevant footage
-- [x] [Frontend]: Query page for relevant footage queries and preview.
-- [x] [Frontend]: Total Video Library Page
-- [ ] [Frontend]: Fetch and show Video Libraries Efficiently
+- [ ] [Frontend]: Select and upload multiple relevant footages
+- [ ] [Frontend]: Fetch and show Video Libraries Efficiently & Pagination
+- [x] [Frontend]: Library Page Layout
+
+Projects Page:
+- [ ] [Backend]: Create Project and Save Project
+- [ ] [Backend]: Save Current Editing Process in Database
 - [ ] [Frontend]: Video Projects page to select desired project to work on.
-- [ ] [Frontend]: Video Timeline page for multiple video selection blocks and place the selected footage in a desired sequence.
+- [ ] [Frotnend]: Create Project
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 
-Other Feature(Lower Priority):
-- [ ] [Backend]: Receive Multiple Video Upload Files
-- [ ] [Frontend]: Select and upload multiple relevant footages
+Timeline Page:
+- [ ] [Frontend]: Video Timeline page for multiple video selection blocks and place the selected footage in a desired sequence.
 
+Block Page:
+- [x] [Frontend]: Query page for relevant footage queries and preview.
 
 Video Assets Pre-process Procedure:
 1. Upload Video to Backend as Cache.
