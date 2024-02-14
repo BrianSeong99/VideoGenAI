@@ -20,11 +20,11 @@ struct UploadButtonComponent: View {
                 }, label: {
                     Image(systemName: "plus")
                         .font(.system(.largeTitle))
-                        .frame(width: 70, height: 70)
-                        .foregroundColor(Color.white)
+                        .frame(width: 50, height: 50)
+                        .foregroundColor(Color.black)
                         .padding(.bottom, 0)
                 })
-                .background(Color.blue)
+                .background(Color.white)
                 .cornerRadius(38.5)
                 .padding()
                 .shadow(color: Color.black.opacity(0.3),

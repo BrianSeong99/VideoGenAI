@@ -28,6 +28,7 @@ struct ContentView: View {
                 Text("Profile Tab")
             }
         }
+//        .environment(\.colorScheme, .dark)
     }
 }
 

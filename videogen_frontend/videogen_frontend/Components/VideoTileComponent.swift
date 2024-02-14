@@ -29,8 +29,9 @@ struct VideoTileComponent: View {
             // Small video tile view
             VideoPlayer(player: player) {}
                 .scaledToFit()
-                .frame(width: 70 * scaleFactor, height: 70 * scaleFactor)
-                .cornerRadius(10 * scaleFactor)
+                .frame(width: 80 * scaleFactor, height: 80 * scaleFactor)
+//                .cornerRadius(10 * scaleFactor)
+//                .border(Color.gray, width: 1)
                 .onAppear {
                     player = AVPlayer(url: videoURL)
                 }
@@ -54,10 +55,10 @@ struct VideoTileComponent: View {
                         .zIndex(2)
                 }
                 .zIndex(isMagnified ? 1 : 0)
-            if isSelected { // Show check mark if the tile is selected
+            if isSelected {
                 Image(systemName: "checkmark.circle.fill")
-                    .foregroundColor(.blue) // You can change the color accordingly
-                    .padding(4) // Adjust padding to position the check mark correctly
+                    .foregroundColor(.blue)
+                    .padding(4) 
             }
         }
     }
