@@ -4,10 +4,12 @@ from flask import current_app as app
 
 def save_file_to_tmp_folder(file, filepath):
     file.save(filepath)
+    print(f"File saved to {filepath}")
     app.logger.info(f"File saved to {filepath}")
 
 def delete_file_from_tmp_folder(filepath):
     os.remove(filepath)
+    print(f"File saved to {filepath}")
     app.logger.info(f"File deleted from {filepath}")
 
 def delete_all_files_from_tmp_folder(folderpath):

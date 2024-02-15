@@ -65,10 +65,15 @@ def upload_videos():
             )
         files.append(request.files[f'video{i}'])
 
+    filepaths = []
+
     for file in files: # If a file is present
         filename = str(int(time.time())) + '_' + secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        filepaths.append(filepath)
         save_file_to_tmp_folder(file, filepath)
+    
+    for filepath in filepaths:
         # Upload to Cloudinary
         cloudinary_response = upload_video_to_cloudinary(filepath)
         root, ext = os.path.splitext(filepath)

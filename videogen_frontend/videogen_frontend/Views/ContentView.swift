@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            SearchView()
+            LibraryView()
             .tabItem {
                 Image(systemName: "sparkle.magnifyingglass")
                 Text("Search Tab")

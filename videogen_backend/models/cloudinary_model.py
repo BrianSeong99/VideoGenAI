@@ -6,7 +6,6 @@ from config import CLOUD_NAME, API_KEY, API_SECRET
 config = cloudinary.config(secure=True)
 
 def upload_video_to_cloudinary(filepath):
-    print(filepath)
     cloudinary_response = cloudinary.uploader.upload(
         filepath,
         resource_type = "video",
@@ -16,6 +15,7 @@ def upload_video_to_cloudinary(filepath):
         auto_tagging = 0.6,
         notification_url = "http://34.125.61.118:5000/v1/upload/cloudinary_webhook"
     )
+    print()
     print("++++++++++++++")
     print(cloudinary_response)
 
