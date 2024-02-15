@@ -12,8 +12,15 @@ struct DecodableType: Decodable { let url: String }
 
 func uploadVideo(video_list: [Data]){
     print("jere")
-    guard !video_list.isEmpty, let url = URL(string: "http://34.125.61.118:5000/v1/upload/videos") else {
-        print("Video list is empty or URL is invalid.")
+    guard !video_list.isEmpty else {
+        print("Video list is empty.")
+        return
+    }
+    
+    let baseString = "http://34.125.61.118:5000/v1/upload/videos"
+    let numVideos = video_list.count
+    guard let url = URL(string: "\(baseString)?num_videos=\(numVideos)") else {
+        print("Invalid URL")
         return
     }
     

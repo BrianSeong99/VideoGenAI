@@ -31,6 +31,7 @@ Library Page:
 - [x] [Backend]: Receive Multiple Video files in one upload
 - [x] [Frontend]: Select and upload a relevant footage
 - [ ] [Frontend]: Select and upload multiple relevant footages
+- [ ] [Frontend]: Loading when uploading
 - [ ] [Frontend]: Fetch and show Video Libraries Efficiently & Pagination
 - [x] [Frontend]: Library Page Layout
 
