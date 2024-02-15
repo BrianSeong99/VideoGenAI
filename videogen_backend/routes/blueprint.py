@@ -4,7 +4,7 @@ from controller.controller import *
 blueprint = Blueprint('blueprint', __name__)
 
 blueprint.route('/upload/cloudinary_webhook', methods=['POST'])(cloudinary_webhook_controller)
-blueprint.route('/upload/video', methods=['POST'])(upload_video_controller)
+blueprint.route('/upload/videos', methods=['POST'])(upload_videos_controller)
 
 blueprint.route('/library/get_videos', methods=['GET'])(get_videos_controller)
 

@@ -7,8 +7,8 @@ from services import library_service
 def cloudinary_webhook_controller():
     return upload_service.cloudinary_webhook()
 
-def upload_video_controller():
-    return upload_service.upload_video()
+def upload_videos_controller():
+    return upload_service.upload_videos()
 
 # query service controller
 

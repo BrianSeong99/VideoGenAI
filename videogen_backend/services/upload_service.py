@@ -1,6 +1,6 @@
 # coding: utf-8
 from flask import request, redirect, Response, current_app as app
-from utils import keyframe_extractor
+from utils import keyframe_extractor, video_file_processor
 from werkzeug.utils import secure_filename
 import os
 import time
@@ -37,17 +37,35 @@ def cloudinary_webhook():
         status=200,
         mimetype='application/json'
     )
+    
+def upload_videos():
+    num_videos = request.args.get('num_videos', None)
+    if num_videos is None:
+        return Response(
+            response="No num_videos found",
+            status=400,
+            mimetype='application/json'
+        )
+    elif int(num_videos) > 10:
+        return Response(
+            response="num_videos should be less than 10",
+            status=400,
+            mimetype='application/json'
+        )
+    num_videos = int(num_videos)
 
-def upload_video():
-    if 'video' not in request.files:
-        return redirect(request.url)
+    files = []
+    for i in range(num_videos):
+        file, message = video_file_processor.request_body_to_video(request, f'video{i}')
+        if file is None:
+            return Response(
+                response=message,
+                status=400,
+                mimetype='application/json'
+            )
+        files.append(request.files[f'video{i}'])
 
-    file = request.files['video']
-
-    if file.filename == '':
-        return redirect(request.url)
-
-    if file:  # If a file is present
+    for file in files: # If a file is present
         filename = str(int(time.time())) + '_' + secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         save_file_to_tmp_folder(file, filepath)
@@ -58,19 +76,13 @@ def upload_video():
         rename_file(filepath, new_file_path) # Rename file to match cloudinary public_id
         # Save to local cache tmp folder
         # result = keyframe_extractor.extract_keyframes(app.config['UPLOAD_FOLDER'], filename)
-        resp = Response(
-            # response=str(result),
-            status=200,
-            mimetype='application/json'
-        )
+    
+    resp = Response(
+        status=200,
+        mimetype='application/json'
+    )
 
-        return resp
-    else: 
-        return Response(
-            response="No file found",
-            status=400,
-            mimetype='application/json'
-        )
+    return resp
 
 def insert_video_metadata_to_indexer():
     public_id = request.args.get('public_id', None)
