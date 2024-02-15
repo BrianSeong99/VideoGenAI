@@ -26,6 +26,7 @@ struct LibraryView: View {
     @State private var isEditing: Bool = false
     @State private var selectedVideoIndexes: Set<Int> = []
     @State private var photosPickerSelections: [PhotosPickerItem] = []
+    @StateObject private var viewModel = UploadViewModel()
 
     @Environment(\.managedObjectContext) private var viewContext
 
@@ -54,20 +55,22 @@ struct LibraryView: View {
     private var trailingBarItems: some View {
         HStack {
             if isEditing {
-                PhotosPicker(selection: $photosPickerSelections, maxSelectionCount: 10, matching: .videos) {
+                PhotosPicker(selection: $photosPickerSelections, maxSelectionCount: 4, matching: .videos) {
                     Label("Add Item", systemImage: "plus")
                 }
                 .onChange(of: photosPickerSelections) { _, _ in
+                    print("changed")
                     Task {
+                        print("here")
                         var video_list: [Data] = [];
                         for photosPickerItem in photosPickerSelections {
                             if let data = try? await photosPickerItem.loadTransferable(type: Data.self) {
                                 video_list.append(data)
+                                print("here1")
                             }
                         }
                         print("video_list len:", video_list)
-                        uploadVideo(video_list: video_list);
-                        print("Done Upload")
+                        viewModel.uploadVideos(video_list: video_list)
                     }
                 }
                 deleteButton
@@ -110,12 +113,27 @@ struct LibraryView: View {
                     }
                     Spacer()
                 }
-//                UploadButtonComponent(isPickerPresented: $isPickerPresented)
+                if viewModel.isUploading {
+                    // Overlay view to block interaction and show progress
+                    ProgressView("Uploading...", value: viewModel.uploadProgress, total: 1.0)
+                        .progressViewStyle(LinearProgressViewStyle())
+                        .frame(width: 200)
+                        .padding()
+                        .background(Color.secondary.colorInvert().opacity(0.8))
+                        .foregroundColor(.primary)
+                        .cornerRadius(10)
+                        .shadow(radius: 10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.primary, lineWidth: 2)
+                        )
+                }
             }
             .navigationBarTitle("Library", displayMode: .inline)
             .navigationBarItems(
                 trailing: trailingBarItems
             )
+            .disabled(viewModel.isUploading)
         }
     }
 }

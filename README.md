@@ -30,9 +30,10 @@ Library Page:
 - [x] [Backend]: Return all assets for Library via Pagination
 - [x] [Backend]: Receive Multiple Video files in one upload
 - [x] [Frontend]: Select and upload a relevant footage
-- [ ] [Frontend]: Select and upload multiple relevant footages
-- [ ] [Frontend]: Loading when uploading
+- [x] [Frontend]: Select and upload multiple relevant footages
+- [x] [Frontend]: Loading when uploading
 - [ ] [Frontend]: Fetch and show Video Libraries Efficiently & Pagination
+- [ ] [Frontend]: Delete Selected Videos
 - [x] [Frontend]: Library Page Layout
 
 Projects Page:
