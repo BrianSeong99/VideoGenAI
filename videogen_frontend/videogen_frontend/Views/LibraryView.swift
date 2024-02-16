@@ -12,26 +12,19 @@ import Combine
 
 struct LibraryView: View {
     
-    init() {
-        AssetLibrary = [
-            URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!,
-            URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!,
-            URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!,
-        ]
-    }
-    
+    @State private var AssetLibrary: [VideoResource] = []
     @State private var searchText: String = ""
     @State private var selectedVideoIndexs: [Int] = []
     @State private var isPickerPresented: Bool = false
     @State private var isEditing: Bool = false
     @State private var selectedVideoIndexes: Set<Int> = []
     @State private var photosPickerSelections: [PhotosPickerItem] = []
-    @StateObject private var viewModel = UploadViewModel()
+    @StateObject private var uploadViewModel = UploadViewModel()
+    @StateObject private var libraryListModel = LibraryListModel()
 
     @Environment(\.managedObjectContext) private var viewContext
 
     let searchControlller = UISearchController();
-    var AssetLibrary: [URL];
     
     private var editButton: some View {
         Button(action: {
@@ -70,7 +63,7 @@ struct LibraryView: View {
                             }
                         }
                         print("video_list len:", video_list)
-                        viewModel.uploadVideos(video_list: video_list)
+                        uploadViewModel.uploadVideos(video_list: video_list)
                     }
                 }
                 deleteButton
@@ -94,10 +87,10 @@ struct LibraryView: View {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 2) {
                             ForEach(0..<AssetLibrary.count, id: \.self) { index in
-                            VideoTileComponent(videoURL: AssetLibrary[index], isSelected: .constant(self.selectedVideoIndexes.contains(index)))
+                                VideoTileComponent(videoURL: 
+                                                    URL(string: AssetLibrary[index].secure_url)!, isSelected: .constant(self.selectedVideoIndexes.contains(index)))
                                 .onTapGesture {
                                     if isEditing {
-                                        print("isEditing")
                                         // Toggle selection
                                         if selectedVideoIndexes.contains(index) {
                                             selectedVideoIndexes.remove(index)
@@ -113,9 +106,9 @@ struct LibraryView: View {
                     }
                     Spacer()
                 }
-                if viewModel.isUploading {
+                if uploadViewModel.isUploading {
                     // Overlay view to block interaction and show progress
-                    ProgressView("Uploading...", value: viewModel.uploadProgress, total: 1.0)
+                    ProgressView("Uploading...", value: uploadViewModel.uploadProgress, total: 1.0)
                         .progressViewStyle(LinearProgressViewStyle())
                         .frame(width: 200)
                         .padding()
@@ -133,7 +126,13 @@ struct LibraryView: View {
             .navigationBarItems(
                 trailing: trailingBarItems
             )
-            .disabled(viewModel.isUploading)
+            .disabled(uploadViewModel.isUploading)
+        }
+        .onAppear {
+            libraryListModel.getAllVideoList(next_page: false)
+        }
+        .onChange(of: libraryListModel.videos) { _ in
+            self.AssetLibrary = libraryListModel.videos
         }
     }
 }

@@ -32,7 +32,8 @@ Library Page:
 - [x] [Frontend]: Select and upload a relevant footage
 - [x] [Frontend]: Select and upload multiple relevant footages
 - [x] [Frontend]: Loading when uploading
-- [ ] [Frontend]: Fetch and show Video Libraries Efficiently & Pagination
+- [x] [Frontend]: Fetch and show Video Libraries Efficiently
+- [ ] [Frontend]: Video List Pagination Loading
 - [ ] [Frontend]: Delete Selected Videos
 - [x] [Frontend]: Library Page Layout
 
