@@ -24,6 +24,9 @@ async def query_videos_controller():
 def get_videos_controller():
     return library_service.get_videos()
 
+def delete_videos_controller():
+    return library_service.delete_videos()
+
 # debug service controller
 
 def insert_video_to_indexer_controller():

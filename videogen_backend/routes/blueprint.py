@@ -7,6 +7,7 @@ blueprint.route('/upload/cloudinary_webhook', methods=['POST'])(cloudinary_webho
 blueprint.route('/upload/videos', methods=['POST'])(upload_videos_controller)
 
 blueprint.route('/library/get_videos', methods=['GET'])(get_videos_controller)
+blueprint.route('/library/delete_videos', methods=['DELETE'])(delete_videos_controller)
 
 blueprint.route('/query/get_video_info', methods=['GET'])(get_video_info_controller)
 blueprint.route('/query/query_videos', methods=['GET'])(query_videos_controller)

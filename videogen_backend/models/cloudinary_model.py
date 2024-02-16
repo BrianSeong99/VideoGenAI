@@ -49,3 +49,6 @@ def get_videos_from_cloudinary(next_cursor, limit):
             next_cursor = next_cursor
         )
     return result
+
+def delete_video_from_cloudinary(public_id):
+    return cloudinary.uploader.destroy(public_id, resource_type = "video")
