@@ -111,8 +111,12 @@ struct LibraryView: View {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 2) {
                             ForEach(0..<AssetLibrary.count, id: \.self) { index in
-                                VideoTileComponent(videoURL: 
-                                    URL(string: AssetLibrary[index].secure_url)!, isSelected: .constant(self.selectedVideoIndexes.contains(index))
+                                VideoTileComponent(
+                                    videoURL: Binding(
+                                        get: { URL(string: AssetLibrary[index].secure_url)! },
+                                        set: { _ in }
+                                    ),
+                                    isSelected: .constant(self.selectedVideoIndexes.contains(index))
                                 )
                                 .onTapGesture {
                                     if isEditing {
@@ -166,8 +170,14 @@ struct LibraryView: View {
         .onAppear {
             libraryListModel.getAllVideoList(next_page: false)
         }
-        .onChange(of: libraryListModel.videos) { _ in
+        .onChange(of: libraryListModel.videos) { _, _ in
+            print("------BEFORE")
+            print(self.AssetLibrary)
+            
             self.AssetLibrary = libraryListModel.videos
+            
+            print("------AFTER")
+            print(self.AssetLibrary)
             isFetchingMore = false
         }
     }

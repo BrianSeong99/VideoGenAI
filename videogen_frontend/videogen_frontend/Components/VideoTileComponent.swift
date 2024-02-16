@@ -9,16 +9,16 @@ import SwiftUI
 import AVKit
 
 struct VideoTileComponent: View {
-    let videoURL: URL
     
     @State private var scaleFactor: CGFloat
     @State private var player: AVPlayer?
     @State private var isMagnified: Bool
-    @Binding var isSelected: Bool // Added to manage selection state
+    @Binding var videoURL: URL
+    @Binding var isSelected: Bool
 
     
-    public init(videoURL: URL, isSelected: Binding<Bool>) {
-        self.videoURL = videoURL
+    public init(videoURL: Binding<URL>, isSelected: Binding<Bool>) {
+        self._videoURL = videoURL
         self._scaleFactor = State(initialValue: 1.0)
         self._isMagnified = State(initialValue: false)
         self._isSelected = isSelected
@@ -30,10 +30,13 @@ struct VideoTileComponent: View {
             VideoPlayer(player: player) {}
                 .scaledToFit()
                 .frame(width: 80 * scaleFactor, height: 80 * scaleFactor)
-//                .cornerRadius(10 * scaleFactor)
-//                .border(Color.gray, width: 1)
+                .cornerRadius(10 * scaleFactor)
+//                .border(Color.gray, width: 0.5)
                 .onAppear {
                     player = AVPlayer(url: videoURL)
+                }
+                .onChange(of: videoURL) { _, newURL in
+                    player = AVPlayer(url: newURL)
                 }
                 .contextMenu {
                     Button(action: {

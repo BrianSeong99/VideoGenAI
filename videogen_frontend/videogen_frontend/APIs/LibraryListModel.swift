@@ -25,7 +25,7 @@ class LibraryListModel: ObservableObject {
     @Published var videos: [VideoResource] = []
     @Published var next_cursor: String?
     
-    func getAllVideoList(next_page: Bool = false, limit: Int = 44) {
+    func getAllVideoList(next_page: Bool = false, limit: Int = 20) {
         let baseString = "http://34.125.61.118:5000/v1/library/get_videos"
         let urlString = next_page && next_cursor != nil ? "\(baseString)?next_cursor=\(next_cursor!)&limit=\(limit)" : "\(baseString)?limit=\(limit)"
         
@@ -86,8 +86,12 @@ class LibraryListModel: ObservableObject {
             }
     }
     
-    func searchCloudinaryVideosWithText(text: String, max_results: Int = 10, next_page: Bool = false) {
+    func searchCloudinaryVideosWithText(text: String, max_results: Int = 30, next_page: Bool = false) {
         var keywords = text.split(separator: " ").map(String.init)
+        if (keywords.count == 0) {
+            self.getAllVideoList(next_page: false)
+            return
+        }
         keywords.append("resource_type:video")
         let expression = keywords.joined(separator: " AND ")
         print(expression)
@@ -98,29 +102,17 @@ class LibraryListModel: ObservableObject {
             .responseDecodable(of: SearchVideoResponse.self) { response in
                 switch response.result {
                 case .success(let searchVideoResponse):
-                    if (next_page) {
-                        DispatchQueue.main.async {
-                            self.videos.append(contentsOf: searchVideoResponse.resources)
-                            print("continue search", searchVideoResponse.resources.count)
-                            if let nextCursor = searchVideoResponse.next_cursor, !nextCursor.isEmpty {
-                                self.next_cursor = nextCursor
-                                print("Next cursor: \(nextCursor)")
-                            } else {
-                                self.next_cursor = nil
-                                print("No more pages.")
-                            }
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            self.videos = searchVideoResponse.resources
-                            print("first search", searchVideoResponse.resources.count, searchVideoResponse.resources)
-                            if let nextCursor = searchVideoResponse.next_cursor, !nextCursor.isEmpty {
-                                self.next_cursor = nextCursor
-                                print("Next cursor: \(nextCursor)")
-                            } else {
-                                self.next_cursor = nil
-                                print("No more pages.")
-                            }
+                    print(searchVideoResponse.resources)
+                    DispatchQueue.main.async {
+                        self.videos = searchVideoResponse.resources
+                        print("videos", self.videos)
+                        print("first search", searchVideoResponse.resources.count, searchVideoResponse.resources)
+                        if let nextCursor = searchVideoResponse.next_cursor, !nextCursor.isEmpty {
+                            self.next_cursor = nextCursor
+                            print("Next cursor: \(nextCursor)")
+                        } else {
+                            self.next_cursor = nil
+                            print("No more pages.")
                         }
                     }
                 case .failure(let error):
