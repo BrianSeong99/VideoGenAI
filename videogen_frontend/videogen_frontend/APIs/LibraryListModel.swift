@@ -31,15 +31,49 @@ class LibraryListModel: ObservableObject {
                         DispatchQueue.main.async {
                             self.videos.append(contentsOf: videoLibraryResponse.resources)
                             print("next", videoLibraryResponse.resources.count)
-                            self.next_cursor = videoLibraryResponse.next_cursor
+                            if let nextCursor = videoLibraryResponse.next_cursor, !nextCursor.isEmpty {
+                                self.next_cursor = nextCursor
+                                print("Next cursor: \(nextCursor)")
+                            } else {
+                                self.next_cursor = nil
+                                print("No more pages.")
+                            }
                         }
                     } else {
                         DispatchQueue.main.async {
                             self.videos = videoLibraryResponse.resources
-                            print("first", videoLibraryResponse.resources.count)
-                            self.next_cursor = videoLibraryResponse.next_cursor
+                            print("first", videoLibraryResponse.resources.count, videoLibraryResponse)
+                            if let nextCursor = videoLibraryResponse.next_cursor, !nextCursor.isEmpty {
+                                self.next_cursor = nextCursor
+                                print("Next cursor: \(nextCursor)")
+                            } else {
+                                self.next_cursor = nil
+                                print("No more pages.")
+                            }
                         }
                     }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    func deleteSelectedVideos(deleteList: [String]) {
+        
+        let parameters: Parameters = [
+            "public_ids": deleteList
+        ]
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        let urlString = "http://34.125.61.118:5000/v1/library/delete_videos"
+        AF.request(urlString, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseData { response in
+                switch response.result {
+                case .success:
+                    print("delete success")
+                    self.getAllVideoList(next_page: false)
                 case .failure(let error):
                     print(error)
                 }
