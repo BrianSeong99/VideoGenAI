@@ -97,12 +97,17 @@ struct LibraryView: View {
             libraryListModel.getAllVideoList(next_page: true)
         }
     }
+    
+    private func searchLibraryWithText() {
+        print("Searching for: \(searchText)")
+        libraryListModel.searchCloudinaryVideosWithText(text: searchText)
+    }
 
     var body: some View {
         NavigationView {
             ZStack() {
                 VStack() {
-                    SearchBarComponent(text: $searchText)
+                    SearchBarComponent(text: $searchText, onSubmit: searchLibraryWithText)
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 2) {
                             ForEach(0..<AssetLibrary.count, id: \.self) { index in

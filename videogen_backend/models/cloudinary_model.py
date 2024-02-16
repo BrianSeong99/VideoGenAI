@@ -52,3 +52,19 @@ def get_videos_from_cloudinary(next_cursor, limit):
 
 def delete_video_from_cloudinary(public_id):
     return cloudinary.uploader.destroy(public_id, resource_type = "video")
+
+def search_video_in_cloudinary(expression, max_results = 10):
+    return cloudinary.Search()\
+        .expression(expression)\
+        .fields("context")\
+        .fields("tags")\
+        .fields("format")\
+        .fields("version")\
+        .fields("created_at")\
+        .fields("bytes")\
+        .fields("width")\
+        .fields("height")\
+        .fields("url")\
+        .fields("secure_url")\
+        .max_results(str(max_results))\
+        .execute()
