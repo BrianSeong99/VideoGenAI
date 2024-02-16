@@ -17,6 +17,7 @@ struct LibraryView: View {
     @State private var selectedVideoIndexs: [Int] = []
     @State private var isPickerPresented: Bool = false
     @State private var isEditing: Bool = false
+    @State private var isFetchingMore = false
     @State private var selectedVideoIndexes: Set<Int> = []
     @State private var photosPickerSelections: [PhotosPickerItem] = []
     @StateObject private var uploadViewModel = UploadViewModel()
@@ -79,6 +80,14 @@ struct LibraryView: View {
         }
     }
 
+    private func loadMoreContentIfNeeded() {
+        if (libraryListModel.next_cursor != nil) {
+            guard !isFetchingMore, let _ = libraryListModel.next_cursor else { return }
+            isFetchingMore = true
+            libraryListModel.getAllVideoList(next_page: true)
+        }
+    }
+
     var body: some View {
         NavigationView {
             ZStack() {
@@ -88,7 +97,8 @@ struct LibraryView: View {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 2) {
                             ForEach(0..<AssetLibrary.count, id: \.self) { index in
                                 VideoTileComponent(videoURL: 
-                                                    URL(string: AssetLibrary[index].secure_url)!, isSelected: .constant(self.selectedVideoIndexes.contains(index)))
+                                    URL(string: AssetLibrary[index].secure_url)!, isSelected: .constant(self.selectedVideoIndexes.contains(index))
+                                )
                                 .onTapGesture {
                                     if isEditing {
                                         // Toggle selection
@@ -100,9 +110,18 @@ struct LibraryView: View {
                                         }
                                     }
                                 }
+                                .onAppear {
+                                    if index == AssetLibrary.count - 1 {
+                                        loadMoreContentIfNeeded()
+                                    }
+                                }
                             }
                         }
                         .padding()
+                        if isFetchingMore {
+                            ProgressView()
+                                .padding()
+                        }
                     }
                     Spacer()
                 }
@@ -133,6 +152,7 @@ struct LibraryView: View {
         }
         .onChange(of: libraryListModel.videos) { _ in
             self.AssetLibrary = libraryListModel.videos
+            isFetchingMore = false
         }
     }
 }
