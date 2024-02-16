@@ -120,7 +120,6 @@ struct LibraryView: View {
                                 )
                                 .onTapGesture {
                                     if isEditing {
-                                        // Toggle selection
                                         if selectedVideoIndexes.contains(index) {
                                             selectedVideoIndexes.remove(index)
                                         } else {
@@ -130,10 +129,11 @@ struct LibraryView: View {
                                     }
                                 }
                                 .onAppear {
-                                    if index == AssetLibrary.count - 1 {
-                                        print(index)
-                                        loadMoreContentIfNeeded()
-                                    }
+                                    // for pagination, add back later
+//                                    if index == AssetLibrary.count - 1 {
+//                                        print(index)
+//                                        loadMoreContentIfNeeded()
+//                                    }
                                 }
                             }
                         }
@@ -171,13 +171,14 @@ struct LibraryView: View {
             libraryListModel.getAllVideoList(next_page: false)
         }
         .onChange(of: libraryListModel.videos) { _, _ in
-            print("------BEFORE")
-            print(self.AssetLibrary)
+//            print("------BEFORE")
+//            print(self.AssetLibrary)
             
             self.AssetLibrary = libraryListModel.videos
+            selectedVideoIndexes.removeAll()
             
-            print("------AFTER")
-            print(self.AssetLibrary)
+//            print("------AFTER")
+//            print(self.AssetLibrary)
             isFetchingMore = false
         }
     }
