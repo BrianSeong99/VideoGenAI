@@ -53,13 +53,10 @@ Timeline Page:
 Block Page:
 - [x] [Frontend]: Query page for relevant footage queries and preview.
 
-Video Assets Pre-process Procedure:
-1. Upload Video to Backend as Cache.
-2. Upload video in the cache to Cloudinary, and store video id on Cloudinary.
-3. Extract Key frames, and Store Summary, Tags, and Cloudinary ID in the pinecone database.
-4. Query Using Natural Language and Parse into Pinecone DB Queries
-5. Search and return Pinecone DB Ranks
-6. Show in frontend
+#### Improvements/Known Issues (Lower Priority):
+- [ ] [Frontend][Bug] Efficient Library Videos Loading, app crashing because all videos are taking up the main thread.
+- [ ] [Frontend][Improvement] Hide Search Bar when in edit mode.
+- [ ] [Backend][Bug] Remove video meta data in pinecone indexer when removing the video from cloudinary.
 
 ### Future Scope
 - [ ] [Backend]: Script to Video Footage selections in sequence generation
@@ -69,3 +66,10 @@ Video Assets Pre-process Procedure:
 - [ ] [Frontend]: Script & video gen result preview page.
 - [ ] [Frontend]: User Login and Profile Page
 
+## Video Assets Pre-process Procedure
+1. Upload Video to Backend as Cache.
+2. Upload video in the cache to Cloudinary, and store video id on Cloudinary.
+3. Extract Key frames, and Store Summary, Tags, and Cloudinary ID in the pinecone database.
+4. Query Using Natural Language and Parse into Pinecone DB Queries
+5. Search and return Pinecone DB Ranks
+6. Show in frontend
