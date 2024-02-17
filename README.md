@@ -43,7 +43,7 @@ Library Page:
 Projects Page:
 - [ ] [Backend]: Create Project and Save Project
 - [ ] [Backend]: Save Current Editing Process in Database
-- [ ] [Frontend]: Video Projects page to select desired project to work on.
+- [ ] [Frontend]: Video Projects Page with Pagination to select desired project to work on.
 - [ ] [Frotnend]: Create Project
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 
@@ -54,9 +54,10 @@ Block Page:
 - [x] [Frontend]: Query page for relevant footage queries and preview.
 
 #### Improvements/Known Issues (Lower Priority):
-- [ ] [Frontend][Bug] Efficient Library Videos Loading, app crashing because all videos are taking up the main thread.
+- [x] [Frontend][Bug] Efficient Library Videos Loading, app crashing because all videos are taking up the main thread.
 - [ ] [Frontend][Improvement] Hide Search Bar when in edit mode.
 - [ ] [Backend][Bug] Remove video meta data in pinecone indexer when removing the video from cloudinary.
+- [ ] [Frontend][Improvement] Navigation Bar Title Style.
 
 ### Future Scope
 - [ ] [Backend]: Script to Video Footage selections in sequence generation

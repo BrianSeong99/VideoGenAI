@@ -6,12 +6,10 @@
 //
 
 import SwiftUI
-import AVKit
 
 struct VideoTileComponent: View {
     
     @State private var scaleFactor: CGFloat
-    @State private var player: AVPlayer?
     @State private var isMagnified: Bool
     @Binding var videoURL: URL
     @Binding var isSelected: Bool
@@ -23,41 +21,55 @@ struct VideoTileComponent: View {
         self._isMagnified = State(initialValue: false)
         self._isSelected = isSelected
     }
+    
+    private func toThumbnailURL(url: URL) -> URL {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        
+        if let path = components?.path, path.hasSuffix(".mp4") || path.hasSuffix(".mov") {
+            let newPath = path.replacingOccurrences(of: ".mp4", with: ".jpg")
+                                  .replacingOccurrences(of: ".mov", with: ".jpg")
+            components?.path = newPath
+        }
+
+        return components?.url ?? url
+    }
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            // Small video tile view
-            VideoPlayer(player: player) {}
-                .scaledToFit()
-                .frame(width: 80 * scaleFactor, height: 80 * scaleFactor)
-                .cornerRadius(10 * scaleFactor)
-//                .border(Color.gray, width: 0.5)
-                .onAppear {
-                    player = AVPlayer(url: videoURL)
+            AsyncImage(url: toThumbnailURL(url: videoURL)) { phase in
+                if let image = phase.image {
+                    image.resizable()
+                         .aspectRatio(contentMode: .fill)
+                } else if phase.error != nil {
+                    Color.gray.opacity(0.3)
+                } else {
+                    ProgressView()
                 }
-                .onChange(of: videoURL) { _, newURL in
-                    player = AVPlayer(url: newURL)
+            }
+            .frame(width: 80 * scaleFactor, height: 80 * scaleFactor)
+            .clipped()
+//            .cornerRadius(10 * scaleFactor)
+            .contextMenu {
+                Button(action: {
+                    print("Share Video")
+                }) {
+                    Text("Share")
+                    Image(systemName: "square.and.arrow.up")
                 }
-                .contextMenu {
-                    Button(action: {
-                        print("Share Video")
-                    }) {
-                        Text("Share")
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                    
-                    Button(action: {
-                        print("Save Video")
-                    }) {
-                        Text("Save")
-                        Image(systemName: "square.and.arrow.down")
-                    }
-                } preview: {
-                    VideoPreviewComponent(videoURL: videoURL)
-                        .animation(Animation.snappy(duration: 0.1), value: 0)
-                        .zIndex(2)
+                
+                Button(action: {
+                    print("Save Video")
+                }) {
+                    Text("Save")
+                    Image(systemName: "square.and.arrow.down")
                 }
-                .zIndex(isMagnified ? 1 : 0)
+            } preview: {
+                VideoPreviewComponent(videoURL: videoURL)
+                    .animation(Animation.snappy(duration: 0.1), value: 0)
+                    .zIndex(2)
+            }
+            .zIndex(isMagnified ? 1 : 0)
+            
             if isSelected {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundColor(.blue)

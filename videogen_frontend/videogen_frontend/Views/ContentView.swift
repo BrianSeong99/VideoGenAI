@@ -16,10 +16,10 @@ struct ContentView: View {
                 Text("Search Tab")
             }
 
-            TimelineView()
+            ProjectsView()
             .tabItem {
-                Image(systemName: "calendar.day.timeline.left")
-                Text("Timeline Tab")
+                Image(systemName: "folder")
+                Text("Projects")
             }
             
             TimelineView()

@@ -129,11 +129,10 @@ struct LibraryView: View {
                                     }
                                 }
                                 .onAppear {
-                                    // for pagination, add back later
-//                                    if index == AssetLibrary.count - 1 {
-//                                        print(index)
-//                                        loadMoreContentIfNeeded()
-//                                    }
+                                    if index == AssetLibrary.count - 1 {
+                                        print(index)
+                                        loadMoreContentIfNeeded()
+                                    }
                                 }
                             }
                         }
@@ -184,7 +183,7 @@ struct LibraryView: View {
     }
 }
 
-struct SearchView_Previews: PreviewProvider {
+struct LibraryView_Previews: PreviewProvider {
     static var previews: some View {
         LibraryView()
     }
