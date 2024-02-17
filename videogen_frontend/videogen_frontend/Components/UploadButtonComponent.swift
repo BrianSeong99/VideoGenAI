@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UploadButtonComponent: View {
-    @Binding var isPickerPresented: Bool
+    @Binding var isCreateProjectWindowPresented: Bool
     
     var body: some View {
         VStack {
@@ -16,7 +16,7 @@ struct UploadButtonComponent: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    isPickerPresented = true
+                    isCreateProjectWindowPresented = true
                 }, label: {
                     Image(systemName: "plus")
                         .font(.system(.largeTitle))
@@ -37,5 +37,5 @@ struct UploadButtonComponent: View {
 }
 
 #Preview {
-    UploadButtonComponent(isPickerPresented: .constant(true))
+    UploadButtonComponent(isCreateProjectWindowPresented: .constant(true))
 }

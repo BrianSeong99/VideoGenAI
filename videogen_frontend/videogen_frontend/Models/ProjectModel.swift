@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProjectData {
+struct ProjectData: Decodable, Equatable {
     let project_id: String
     let created_at: String
     let project_title: String
@@ -15,13 +15,13 @@ struct ProjectData {
     let blocks: [BlockData]
 }
 
-enum BlockType {
-    case Imported
-    case Prompted
+enum BlockType: String, Decodable {
+    case Imported = "Imported"
+    case Prompted = "Prompted"
 }
 
 // Block Data Type for Queries and Answers
-struct BlockData {
+struct BlockData: Decodable, Equatable{
     let block_id: String
     let type: BlockType
     let videoList: [VideoResource]

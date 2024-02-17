@@ -38,6 +38,7 @@ Library Page:
 - [x] [Frontend]: Delete Selected Videos
 - [x] [Frontend]: Library Page Layout
 - [x] [Frontend]: Show Searched Result
+- [-] [Frontend]: Implement actions for preview buttons of videos, copy video url & safe video file.
 - [-] [Frontend]: Video List Pagination Loading
 
 Projects Page:
@@ -55,6 +56,7 @@ Block Page:
 
 #### Improvements/Known Issues (Lower Priority):
 - [x] [Frontend][Bug] Efficient Library Videos Loading, app crashing because all videos are taking up the main thread.
+- [x] [Frontend][Improvement] Preview of the entire video clip
 - [ ] [Frontend][Improvement] Hide Search Bar when in edit mode.
 - [ ] [Backend][Bug] Remove video meta data in pinecone indexer when removing the video from cloudinary.
 - [ ] [Frontend][Improvement] Navigation Bar Title Style.

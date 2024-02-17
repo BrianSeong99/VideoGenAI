@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct VideoTileComponent: View {
     
@@ -33,6 +34,23 @@ struct VideoTileComponent: View {
 
         return components?.url ?? url
     }
+    
+    private func toPreviewURL(url: URL) -> URL {
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            return url
+        }
+        
+        let previewTransformation = "e_preview:duration_6:max_seg_3:min_seg_dur_1/"
+        
+        if let uploadRange = components.path.range(of: "/upload/") {
+            let startOfVersion = components.path.index(uploadRange.upperBound, offsetBy: 0)
+            components.path.insert(contentsOf: previewTransformation, at: startOfVersion)
+        }
+        
+        print(components.url ?? url)
+
+        return components.url ?? url
+    }
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -51,10 +69,11 @@ struct VideoTileComponent: View {
 //            .cornerRadius(10 * scaleFactor)
             .contextMenu {
                 Button(action: {
-                    print("Share Video")
+                    UIPasteboard.general.url = videoURL
+                    print("Copy Video URL")
                 }) {
-                    Text("Share")
-                    Image(systemName: "square.and.arrow.up")
+                    Text("Copy Link")
+                    Image(systemName: "link")
                 }
                 
                 Button(action: {
@@ -64,7 +83,7 @@ struct VideoTileComponent: View {
                     Image(systemName: "square.and.arrow.down")
                 }
             } preview: {
-                VideoPreviewComponent(videoURL: videoURL)
+                VideoPreviewComponent(videoURL: toPreviewURL(url: videoURL))
                     .animation(Animation.snappy(duration: 0.1), value: 0)
                     .zIndex(2)
             }

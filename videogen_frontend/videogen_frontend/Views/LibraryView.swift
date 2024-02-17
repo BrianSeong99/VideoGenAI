@@ -14,8 +14,6 @@ struct LibraryView: View {
     
     @State private var AssetLibrary: [VideoResource] = []
     @State private var searchText: String = ""
-    @State private var selectedVideoIndexs: [Int] = []
-    @State private var isPickerPresented: Bool = false
     @State private var isEditing: Bool = false
     @State private var isFetchingMore = false
     @State private var selectedVideoIndexes: Set<Int> = []
