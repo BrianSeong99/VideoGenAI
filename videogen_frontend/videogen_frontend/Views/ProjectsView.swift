@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProjectsView: View {
     
-    @State private var ProjectList: [ProjectData] = []
+    @State private var projectList: [ProjectData] = []
     @State private var isFetchingMore = false
     @State private var isCreateProjectWindowPresented: Bool = false
 
@@ -28,10 +28,10 @@ struct ProjectsView: View {
             ZStack {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 2) {
-                        ForEach(0..<ProjectList.count, id: \.self) { index in
+                        ForEach(0..<self.projectList.count, id: \.self) { index in
                             ProjectTileComponent(
                                 thumbnail_url: Binding(
-                                    get: { URL(string: ProjectList[index].thumb_nail_url)! },
+                                    get: { URL(string: self.projectList[index].thumb_nail_url)! },
                                     set: { _ in }
                                 )
                             )
@@ -39,7 +39,7 @@ struct ProjectsView: View {
                                 // jump to project details page (Timeline Page)
                             }
                             .onAppear {
-                                if index == ProjectList.count - 1 {
+                                if index == self.projectList.count - 1 {
                                     print(index)
                                     loadMoreContentIfNeeded()
                                 }
@@ -56,20 +56,13 @@ struct ProjectsView: View {
             }
             .navigationBarTitle("Projects", displayMode: .inline)
         }
-        //        .onAppear {
-        ////            libraryListModel.getAllVideoList(next_page: false)
-        //        }
-        //        .onChange(of: libraryListModel.videos) { _, _ in
-        ////            print("------BEFORE")
-        ////            print(self.AssetLibrary)
-        //
-        //            self.AssetLibrary = libraryListModel.videos
-        //            selectedVideoIndexes.removeAll()
-        //
-        ////            print("------AFTER")
-        ////            print(self.AssetLibrary)
-        //            isFetchingMore = false
-        //        }
+        .onAppear {
+            projectListModel.getProjectList(next_page: false)
+        }
+        .onChange(of: projectListModel.projects) { _, _ in
+            self.projectList = projectListModel.projects
+            isFetchingMore = false
+        }
     }
 }
 

@@ -47,8 +47,6 @@ struct VideoTileComponent: View {
             components.path.insert(contentsOf: previewTransformation, at: startOfVersion)
         }
         
-        print(components.url ?? url)
-
         return components.url ?? url
     }
 
