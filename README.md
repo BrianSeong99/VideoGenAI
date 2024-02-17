@@ -24,6 +24,7 @@ Infrastructure:
 - [x] [Backend]: Video footage content categorization, tagging, meta data storing.
 - [x] [Backend]: Indexer for video data indexing
 - [x] [Backend]: NLP searching of relevant footage with indexer
+- [ ] [Backend]: Database for editing progress
 - [ ] [Backend]: Generate Video Summary
 
 Library Page:
