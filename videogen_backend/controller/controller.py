@@ -1,6 +1,4 @@
-from services import upload_service
-from services import query_service
-from services import library_service
+from services import upload_service, query_service, library_service, project_service
 
 # upload service controller
 
@@ -29,6 +27,20 @@ def delete_videos_controller():
 
 def query_videos_controller():
     return library_service.search_videos_by_keywords()
+
+# project service controller
+def create_project_controller():
+    print("here")
+    return project_service.create_project()
+
+def update_project_controller():
+    return project_service.update_project()
+
+def delete_project_controller():
+    return project_service.delete_project()
+
+def get_projects_controller():
+    return project_service.get_projects()
 
 # debug service controller
 

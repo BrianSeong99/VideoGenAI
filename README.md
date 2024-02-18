@@ -43,12 +43,13 @@ Library Page:
 - [-] [Frontend]: Video List Pagination Loading
 
 Projects Page:
-- [ ] [Backend]: Create Project and Save Project
-- [ ] [Backend]: Save Current Editing Process in Database
-- [ ] [Backend]: Return Projects List in Pagination
+- [x] [Backend]: Create Project and Save Project
+- [x] [Backend]: Update Current Editing Process in Database
+- [x] [Backend]: Delete a Project
+- [x] [Backend]: Return Projects List in Pagination
 - [-] [Frontend]: Video Projects Page with Pagination to select desired project to work on.
 - [ ] [Frotnend]: Create Project
-- [ ] [Frontend]: Remove Project
+- [-] [Frontend]: Remove Project
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 
 Timeline Page:

@@ -16,11 +16,9 @@ struct ProjectsView: View {
     @StateObject private var projectListModel = ProjectListModel()
     
     private func loadMoreContentIfNeeded() {
-        if (projectListModel.next_cursor != nil) {
-            guard !isFetchingMore, let _ = projectListModel.next_cursor else { return }
-            isFetchingMore = true
-            projectListModel.getProjectList(next_page: true)
-        }
+        guard !isFetchingMore else { return }
+        isFetchingMore = true
+        projectListModel.getProjectList(next_page_or_refresh: true)
     }
     
     var body: some View {
@@ -31,7 +29,7 @@ struct ProjectsView: View {
                         ForEach(0..<self.projectList.count, id: \.self) { index in
                             ProjectTileComponent(
                                 thumbnail_url: Binding(
-                                    get: { URL(string: self.projectList[index].thumb_nail_url)! },
+                                    get: { URL(string: self.projectList[index].thumbnail_url)! },
                                     set: { _ in }
                                 )
                             )
@@ -57,7 +55,7 @@ struct ProjectsView: View {
             .navigationBarTitle("Projects", displayMode: .inline)
         }
         .onAppear {
-            projectListModel.getProjectList(next_page: false)
+            projectListModel.getProjectList(next_page_or_refresh: false)
         }
         .onChange(of: projectListModel.projects) { _, _ in
             self.projectList = projectListModel.projects
