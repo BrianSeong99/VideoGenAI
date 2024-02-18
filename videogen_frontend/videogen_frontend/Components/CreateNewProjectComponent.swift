@@ -15,7 +15,6 @@ struct CreateNewProjectComponent: View {
     
     var onDismiss: ((String) -> Void)?
 
-    
     var body: some View {
         NavigationView {
             VStack {
@@ -24,12 +23,14 @@ struct CreateNewProjectComponent: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
                     .padding(.horizontal)
-                
+                Spacer()
                 Button(action: {
                     projectListModel.createProject(project_title: projectTitle) { insertedId in
                         if let insertedId = insertedId {
                             self.isPresented = false
                             onDismiss?(insertedId)
+                        } else {
+                            print("insertID failed")
                         }
                     }
                 }) {
@@ -41,9 +42,7 @@ struct CreateNewProjectComponent: View {
                         .cornerRadius(8)
                         .padding(.horizontal)
                 }
-                .disabled(projectTitle.isEmpty)
-                
-                Spacer() // Pushes all content to the top
+//                .disabled(projectTitle.isEmpty)
             }
             .navigationBarTitle("New Project", displayMode: .inline)
         }

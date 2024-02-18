@@ -9,13 +9,12 @@ import SwiftUI
 
 struct ProjectsView: View {
     
-//    @State private var projectList: [ProjectData] = []
     @State private var projectList_left: [ProjectData] = []
     @State private var projectList_right: [ProjectData] = []
     @State private var isFetchingMore = false
-    @State private var isCreateProjectWindowPresented: Bool = false
     @StateObject private var projectListModel = ProjectListModel()
     
+    @State private var isCreateProjectWindowPresented: Bool = false
     @State private var navigateToTimelineView = false
     @State private var insertedIdForTimelineView: String? = nil
     
@@ -29,8 +28,9 @@ struct ProjectsView: View {
     
     private func projectTileComponent(currentIndex: Int, leftOrRight: Bool) -> some View {
         let projectData = leftOrRight ? self.projectList_left[currentIndex] : self.projectList_right[currentIndex]
+        let defaultThumbnailURL = "https://res.cloudinary.com/demtzsiln/video/upload/v1708079752/s6gl22ltwnnoxgppbhgc.jpg"
         return ProjectTileComponent(
-                thumbnail_url: URL(string: projectData.thumbnail_url)!,
+                thumbnail_url: URL(string: projectData.thumbnail_url) ?? URL(string: defaultThumbnailURL)!,
                 project_title: projectData.project_title,
                 project_id: projectData._id,
                 projectListModel: projectListModel
@@ -74,6 +74,7 @@ struct ProjectsView: View {
                     .sheet(isPresented: $isCreateProjectWindowPresented) {
                         CreateNewProjectComponent(isPresented: $isCreateProjectWindowPresented) { insertedId in
                             self.insertedIdForTimelineView = insertedId
+                            self.isCreateProjectWindowPresented = false
                             self.navigateToTimelineView = true
                         }
                     }
@@ -90,8 +91,10 @@ struct ProjectsView: View {
         }
         .onChange(of: projectListModel.projects) { _, _ in
             let projectList = projectListModel.projects
+            print(projectList)
             self.projectList_left = projectList.enumerated().compactMap { $0.offset % 2 == 0 ? $0.element : nil }
             self.projectList_right = projectList.enumerated().compactMap { $0.offset % 2 != 0 ? $0.element : nil }
+            print(self.projectList_left.count, self.projectList_right.count)
             isFetchingMore = false
         }
     }
