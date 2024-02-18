@@ -34,7 +34,6 @@ def get_project_controller():
     return project_service.get_project()
 
 def create_project_controller():
-    print("here")
     return project_service.create_project()
 
 def update_project_controller():

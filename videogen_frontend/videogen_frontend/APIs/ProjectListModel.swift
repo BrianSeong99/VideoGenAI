@@ -27,6 +27,21 @@ class ProjectListModel: ObservableObject {
     @Published var page: Int = 0
     @Published var totalCount: Int = 0
     
+    func getProject(project_id: String, completion: @escaping (ProjectData?) -> Void) {
+        let urlString = "http://34.125.61.118:5000/v1/projects?_id=\(project_id)"
+        AF.request(urlString)
+            .validate()
+            .responseDecodable(of: ProjectData.self) { response in
+                switch response.result {
+                case .success(let projectData):
+                    completion(projectData)
+                case .failure(let error):
+                    print(error)
+                    completion(nil)
+                }
+            }
+    }
+    
     func getProjectList(next_page_or_refresh: Bool = false, limit: Int = 10) {
         let baseString = "http://34.125.61.118:5000/v1/projects/get_projects"
         if (next_page_or_refresh) {
@@ -123,8 +138,8 @@ class ProjectListModel: ObservableObject {
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
-        let urlString = "http://34.125.61.118:5000/v1/projects"
-        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        let urlString = "http://localhost:5000/v1/projects"
+        AF.request(urlString, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseData { response in
                 switch response.result {

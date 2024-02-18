@@ -24,7 +24,7 @@ Infrastructure:
 - [x] [Backend]: Video footage content categorization, tagging, meta data storing.
 - [x] [Backend]: Indexer for video data indexing
 - [x] [Backend]: NLP searching of relevant footage with indexer
-- [ ] [Backend]: Database for editing progress
+- [x] [Backend]: Database for editing progress
 - [ ] [Backend]: Generate Video Summary
 
 Library Page:
@@ -53,9 +53,11 @@ Projects Page:
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 
 Timeline Page:
+- [ ] [Frontend]: Timeline Page Layout
+- [x] [Frontend]: Project Title updates
+- [ ] [Frontend]: Q&A Block Component
 - [ ] [Frontend]: Video Timeline page for multiple video selection blocks and place the selected footage in a desired sequence.
 - [ ] [Frontend]: Update Video Sequence in frontend and reflects in the database
-- [ ] [Frontend]: Project Title updates
 - [x] [Backend]: Get Project Details
 
 Block Page:

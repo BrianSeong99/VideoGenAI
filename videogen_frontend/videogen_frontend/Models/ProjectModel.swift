@@ -11,9 +11,9 @@ struct ProjectData: Decodable, Equatable {
     let _id: String
     let created_at: Float
     let updated_at: Float
-    let project_title: String
-    let thumbnail_url: String
-    let blocks: [BlockData]
+    var project_title: String
+    var thumbnail_url: String
+    var blocks: [BlockData]
 }
 
 enum BlockType: String, Decodable {

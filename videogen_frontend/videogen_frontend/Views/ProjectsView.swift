@@ -17,6 +17,7 @@ struct ProjectsView: View {
     @State private var isCreateProjectWindowPresented: Bool = false
     @State private var navigateToTimelineView = false
     @State private var insertedIdForTimelineView: String? = nil
+    @State private var navigateToTimelineViewProjectData: ProjectData? = nil
     
     private func loadMoreContentIfNeeded() {
         if (projectListModel.totalCount > projectList_left.count + projectList_right.count) {
@@ -39,6 +40,17 @@ struct ProjectsView: View {
             // jump to project details page (Timeline Page)
             print("tapped \(leftOrRight)")
             print(currentIndex)
+            self.insertedIdForTimelineView = leftOrRight ? self.projectList_left[currentIndex]._id : self.projectList_right[currentIndex]._id
+            projectListModel.getProject(project_id: self.insertedIdForTimelineView!) { projectData in
+                if let projectData = projectData {
+                    print(projectData)
+                    self.navigateToTimelineViewProjectData = projectData
+                    self.navigateToTimelineView = true
+                    print("Project Fetch Success")
+                } else {
+                    print("Project Fetch Failed")
+                }
+            }
         }
         .onAppear {
             if currentIndex == self.projectList_left.count - 1 {
@@ -75,13 +87,29 @@ struct ProjectsView: View {
                         CreateNewProjectComponent(isPresented: $isCreateProjectWindowPresented) { insertedId in
                             self.insertedIdForTimelineView = insertedId
                             self.isCreateProjectWindowPresented = false
-                            self.navigateToTimelineView = true
+                            projectListModel.getProject(project_id: self.insertedIdForTimelineView!) { projectData in
+                                if let projectData = projectData {
+                                    print(projectData)
+                                    self.navigateToTimelineViewProjectData = projectData
+                                    self.navigateToTimelineView = true
+                                    print("Project Fetch Success")
+                                } else {
+                                    print("Project Fetch Failed")
+                                }
+                            }
                         }
                     }
             }
             .navigationBarTitle("Projects", displayMode: .inline)
             .background(
-                NavigationLink(destination: TimelineView(projectId: insertedIdForTimelineView ?? ""), isActive: $navigateToTimelineView) {
+                NavigationLink(destination: TimelineView(projectId: insertedIdForTimelineView ?? "", projectData: self.navigateToTimelineViewProjectData ?? ProjectData(
+                        _id: "65d156f6e5aff7bbf2eb7f3f",
+                        created_at: 1708218102.6884632,
+                        updated_at: 1708218102.6884632,
+                        project_title: "two more things",
+                        thumbnail_url: "https://res.cloudinary.com/demtzsiln/video/upload/v1708079752/s6gl22ltwnnoxgppbhgc.jpg",
+                        blocks: []
+                    )), isActive: $navigateToTimelineView) {
                     EmptyView()
                 }
             )

@@ -122,6 +122,7 @@ def update_project():
         "thumbnail_url": data['thumbnail_url'],
         "blocks": data['blocks'],
     }
+    print(project_data)
     resp = update_project_in_mongodb(ObjectId(data['_id']), project_data)
     response_data = {
         "matched_count": resp.matched_count,

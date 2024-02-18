@@ -168,14 +168,8 @@ struct LibraryView: View {
             libraryListModel.getAllVideoList(next_page: false)
         }
         .onChange(of: libraryListModel.videos) { _, _ in
-//            print("------BEFORE")
-//            print(self.AssetLibrary)
-            
             self.AssetLibrary = libraryListModel.videos
             selectedVideoIndexes.removeAll()
-            
-//            print("------AFTER")
-//            print(self.AssetLibrary)
             isFetchingMore = false
         }
     }
