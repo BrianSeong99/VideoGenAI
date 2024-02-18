@@ -8,10 +8,11 @@
 import Foundation
 
 struct ProjectData: Decodable, Equatable {
-    let project_id: String
-    let created_at: String
+    let _id: String
+    let created_at: Float
+    let updated_at: Float
     let project_title: String
-    let thumb_nail_url: String
+    let thumbnail_url: String
     let blocks: [BlockData]
 }
 
