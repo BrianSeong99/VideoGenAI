@@ -11,14 +11,18 @@ struct ProjectTileComponent: View {
     
     @State private var scaleFactor: CGFloat
     @State private var isMagnified: Bool
-    var thumbnail_url: URL
-    var project_title: String
+    var projectListModel: ProjectListModel
+    let thumbnail_url: URL
+    let project_title: String
+    let project_id: String
     
-    public init(thumbnail_url: URL, project_title: String) {
+    public init(thumbnail_url: URL, project_title: String, project_id: String, projectListModel: ProjectListModel) {
         self.thumbnail_url = thumbnail_url
         self._scaleFactor = State(initialValue: 1.0)
         self._isMagnified = State(initialValue: false)
         self.project_title = project_title
+        self.project_id = project_id
+        self.projectListModel = projectListModel
     }
     
     private func toThumbnailURL(url: URL) -> URL {
@@ -51,11 +55,11 @@ struct ProjectTileComponent: View {
             .shadow(radius: 5)
             Text(project_title)
                 .font(.headline)
-//                .padding(6)
+                .padding(6)
 //                .background(Color.black.opacity(0.7))
                 .cornerRadius(5)
                 .foregroundColor(.white)
-//                .padding(8)
+                .padding(8)
             }
             .contextMenu {
                 Button(action: {
@@ -67,6 +71,7 @@ struct ProjectTileComponent: View {
                 
                 Button(action: {
                     print("Remove Project")
+                    projectListModel.deleteSelectedProject(delete_id: project_id)
                 }) {
                     Text("Remove")
                     Image(systemName: "trash")
@@ -75,6 +80,6 @@ struct ProjectTileComponent: View {
     }
 }
 
-#Preview {
-    ProjectTileComponent(thumbnail_url: URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!, project_title: "Test")
-}
+//#Preview {
+//    ProjectTileComponent(thumbnail_url: URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!, project_title: "Test")
+//}

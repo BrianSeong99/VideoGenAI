@@ -25,37 +25,22 @@ struct ProjectsView: View {
     }
     
     private func projectTileComponent(currentIndex: Int, leftOrRight: Bool) -> some View {
-        if (leftOrRight) {
-            ProjectTileComponent(
-                thumbnail_url: URL(string: self.projectList_left[currentIndex].thumbnail_url)!,
-        project_title: self.projectList_left[currentIndex].project_title
+        let projectData = leftOrRight ? self.projectList_left[currentIndex] : self.projectList_right[currentIndex]
+        return ProjectTileComponent(
+                thumbnail_url: URL(string: projectData.thumbnail_url)!,
+                project_title: projectData.project_title,
+                project_id: projectData._id,
+                projectListModel: projectListModel
             )
-            .onTapGesture {
-                // jump to project details page (Timeline Page)
-                print("tapped left")
-                print(currentIndex)
-            }
-            .onAppear {
-                if currentIndex == self.projectList_left.count - 1 {
-                    print(currentIndex)
-                    loadMoreContentIfNeeded()
-                }
-            }
-        } else {
-            ProjectTileComponent(
-                thumbnail_url: URL(string: self.projectList_right[currentIndex].thumbnail_url)!,
-        project_title: self.projectList_right[currentIndex].project_title
-            )
-            .onTapGesture {
-                // jump to project details page (Timeline Page)
-                print("tapped right")
-                print(currentIndex)
-            }
-            .onAppear {
-                if currentIndex == self.projectList_right.count - 1 {
-                    print(currentIndex)
-                    loadMoreContentIfNeeded()
-                }
+        .onTapGesture {
+            // jump to project details page (Timeline Page)
+            print("tapped \(leftOrRight)")
+            print(currentIndex)
+        }
+        .onAppear {
+            if currentIndex == self.projectList_left.count - 1 {
+                print(leftOrRight, currentIndex)
+                loadMoreContentIfNeeded()
             }
         }
     }

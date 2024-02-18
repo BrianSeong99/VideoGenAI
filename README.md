@@ -47,9 +47,9 @@ Projects Page:
 - [x] [Backend]: Update Current Editing Process in Database
 - [x] [Backend]: Delete a Project
 - [x] [Backend]: Return Projects List in Pagination
-- [-] [Frontend]: Video Projects Page with Pagination to select desired project to work on.
+- [x] [Frontend]: Video Projects Page with Pagination to select desired project to work on.
 - [ ] [Frotnend]: Create Project
-- [-] [Frontend]: Remove Project
+- [x] [Frontend]: Remove Project
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 
 Timeline Page:
@@ -67,7 +67,8 @@ Block Page:
 - [ ] [Frontend][Improvement] Hide Search Bar when in edit mode.
 - [ ] [Backend][Bug] Remove video meta data in pinecone indexer when removing the video from cloudinary.
 - [ ] [Frontend][Improvement] Navigation Bar Title Style.
-- [ ] [Frontend][Bug] Projects Page Long Press Position Error
+- [x] [Frontend][Bug] Projects Page Long Press Position Error
+- [ ] [Frontend][Bug] Library Page and Projects page Pagination not working after actions(ex. Delete, Search, etc).
 
 ### Future Scope
 - [ ] [Backend]: Script to Video Footage selections in sequence generation

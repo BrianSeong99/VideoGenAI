@@ -24,7 +24,7 @@ def get_projects_from_mongodb(page, limit):
     for iter in resp:
         iter['_id'] = str(iter['_id'])
         projects.append(iter)
-    print(projects)
+    # print(projects)
 
     return {
         "success": True,

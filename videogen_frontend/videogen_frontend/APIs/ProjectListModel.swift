@@ -59,7 +59,7 @@ class ProjectListModel: ObservableObject {
             }
     }
     
-    func deleteSelectedProjects(delete_id: String) {
+    func deleteSelectedProject(delete_id: String) {
         let parameters: Parameters = [
             "_id": delete_id
         ]
