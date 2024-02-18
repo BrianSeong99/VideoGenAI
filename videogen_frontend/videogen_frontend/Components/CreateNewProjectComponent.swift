@@ -9,10 +9,13 @@ import SwiftUI
 
 struct CreateNewProjectComponent: View {
     @State private var projectTitle = ""
-    @State private var navigateToTimelineView = false
     @State private var insertedId: String? = nil
     @StateObject var projectListModel = ProjectListModel() // Assuming you have a function to add projects
+    @Binding var isPresented: Bool
+    
+    var onDismiss: ((String) -> Void)?
 
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -24,8 +27,10 @@ struct CreateNewProjectComponent: View {
                 
                 Button(action: {
                     projectListModel.createProject(project_title: projectTitle) { insertedId in
-                        self.insertedId = insertedId
-                        self.navigateToTimelineView = insertedId != nil
+                        if let insertedId = insertedId {
+                            self.isPresented = false
+                            onDismiss?(insertedId)
+                        }
                     }
                 }) {
                     Text("Create Project")
@@ -41,17 +46,12 @@ struct CreateNewProjectComponent: View {
                 Spacer() // Pushes all content to the top
             }
             .navigationBarTitle("New Project", displayMode: .inline)
-            .background(
-                NavigationLink(destination: TimelineView(projectId: insertedId ?? ""), isActive: $navigateToTimelineView) {
-                    EmptyView()
-                }
-            )
         }
     }
 }
 
-struct CreateNewProjectComponent_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateNewProjectComponent()
-    }
-}
+//struct CreateNewProjectComponent_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CreateNewProjectComponent()
+//    }
+//}

@@ -16,6 +16,9 @@ struct ProjectsView: View {
     @State private var isCreateProjectWindowPresented: Bool = false
     @StateObject private var projectListModel = ProjectListModel()
     
+    @State private var navigateToTimelineView = false
+    @State private var insertedIdForTimelineView: String? = nil
+    
     private func loadMoreContentIfNeeded() {
         if (projectListModel.totalCount > projectList_left.count + projectList_right.count) {
             guard !isFetchingMore else { return }
@@ -69,12 +72,18 @@ struct ProjectsView: View {
                 }
                 UploadButtonComponent(isCreateProjectWindowPresented: $isCreateProjectWindowPresented)
                     .sheet(isPresented: $isCreateProjectWindowPresented) {
-                        print("Sheet dismissed!")
-                    } content: {
-//                        AddArticleView()
+                        CreateNewProjectComponent(isPresented: $isCreateProjectWindowPresented) { insertedId in
+                            self.insertedIdForTimelineView = insertedId
+                            self.navigateToTimelineView = true
+                        }
                     }
             }
             .navigationBarTitle("Projects", displayMode: .inline)
+            .background(
+                NavigationLink(destination: TimelineView(projectId: insertedIdForTimelineView ?? ""), isActive: $navigateToTimelineView) {
+                    EmptyView()
+                }
+            )
         }
         .onAppear {
             projectListModel.getProjectList(next_page_or_refresh: false)

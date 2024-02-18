@@ -28,7 +28,7 @@ class ProjectListModel: ObservableObject {
     @Published var totalCount: Int = 0
     
     func getProjectList(next_page_or_refresh: Bool = false, limit: Int = 10) {
-        let baseString = "http://localhost:5000/v1/projects/get_projects"
+        let baseString = "http://34.125.61.118:5000/v1/projects/get_projects"
         if (next_page_or_refresh) {
             page += 1
         } else {
@@ -71,7 +71,7 @@ class ProjectListModel: ObservableObject {
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
-        let urlString = "http://localhost:5000/v1/projects"
+        let urlString = "http://34.125.61.118:5000/v1/projects"
         AF.request(urlString, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseData { response in
@@ -92,7 +92,7 @@ class ProjectListModel: ObservableObject {
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
-        let urlString = "http://localhost:5000/v1/projects"
+        let urlString = "http://34.125.61.118:5000/v1/projects"
         AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseDecodable(of: CreateProjectResponse.self) { response in
@@ -123,7 +123,7 @@ class ProjectListModel: ObservableObject {
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
-        let urlString = "http://localhost:5000/v1/projects"
+        let urlString = "http://34.125.61.118:5000/v1/projects"
         AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseData { response in
