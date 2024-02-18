@@ -4,6 +4,38 @@ from flask import request, Response, current_app as app
 from models.mongo_model import *
 from bson.objectid import ObjectId
 
+def get_project():
+    _id = request.args.get('_id')
+    if _id is None:
+        return Response(
+            response=json.dumps({"error": "_id is required"}),
+            status=400,
+            mimetype='application/json'
+        )
+    
+    try:
+        _id = ObjectId(_id)
+    except Exception as e:
+        return Response(
+            response=json.dumps({"error": "Invalid '_id' format"}),
+            status=400,
+            mimetype='application/json'
+        )
+    
+    resp = get_project_from_mongodb(ObjectId(_id))
+    if resp is None:
+        return Response(
+            response=json.dumps({"error": "Project with specified _id not found"}),
+            status=404,
+            mimetype='application/json'
+        )
+    else:
+        return Response(
+            response=json.dumps(resp),
+            status=200,
+            mimetype='application/json'
+        )
+
 def get_projects():
     page = int(request.args.get('page', 0))
     limit = int(request.args.get('limit', 20))

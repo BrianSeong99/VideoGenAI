@@ -15,6 +15,14 @@ try:
 except Exception as e:
     print(e)
 
+def get_project_from_mongodb(id):
+    db = client['videogen']
+    collection = db['projects']
+    resp = collection.find_one({"_id": id})
+    if resp:
+        resp['_id'] = str(resp['_id'])
+    return resp
+
 def get_projects_from_mongodb(page, limit):
     db = client['videogen']
     collection = db['projects']

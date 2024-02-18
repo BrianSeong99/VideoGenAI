@@ -56,6 +56,7 @@ Timeline Page:
 - [ ] [Frontend]: Video Timeline page for multiple video selection blocks and place the selected footage in a desired sequence.
 - [ ] [Frontend]: Update Video Sequence in frontend and reflects in the database
 - [ ] [Frontend]: Project Title updates
+- [x] [Backend]: Get Project Details
 
 Block Page:
 - [x] [Frontend]: Query page for relevant footage queries and preview.

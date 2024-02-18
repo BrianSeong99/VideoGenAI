@@ -10,9 +10,10 @@ blueprint.route('/library/get_videos', methods=['GET'])(get_videos_controller)
 blueprint.route('/library/delete_videos', methods=['DELETE'])(delete_videos_controller)
 blueprint.route('/library/search', methods=['GET'])(query_videos_controller)
 
-blueprint.route('/projects/create', methods=['POST'])(create_project_controller)
-blueprint.route('/projects/update', methods=['PUT'])(update_project_controller)
-blueprint.route('/projects/delete', methods=['DELETE'])(delete_project_controller)
+blueprint.route('/projects', methods=['GET'])(get_project_controller)
+blueprint.route('/projects', methods=['POST'])(create_project_controller)
+blueprint.route('/projects', methods=['PUT'])(update_project_controller)
+blueprint.route('/projects', methods=['DELETE'])(delete_project_controller)
 blueprint.route('/projects/get_projects', methods=['GET'])(get_projects_controller)
 
 blueprint.route('/query/get_video_info', methods=['GET'])(get_video_info_controller)

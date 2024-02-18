@@ -71,7 +71,7 @@ class ProjectListModel: ObservableObject {
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
-        let urlString = "http://localhost:5000/v1/projects/delete"
+        let urlString = "http://localhost:5000/v1/projects"
         AF.request(urlString, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseData { response in
@@ -92,7 +92,7 @@ class ProjectListModel: ObservableObject {
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
-        let urlString = "http://localhost:5000/v1/projects/create"
+        let urlString = "http://localhost:5000/v1/projects"
         AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseDecodable(of: CreateProjectResponse.self) { response in
@@ -123,7 +123,7 @@ class ProjectListModel: ObservableObject {
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
-        let urlString = "http://localhost:5000/v1/projects/update"
+        let urlString = "http://localhost:5000/v1/projects"
         AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate()
             .responseData { response in

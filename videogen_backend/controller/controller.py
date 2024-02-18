@@ -29,6 +29,10 @@ def query_videos_controller():
     return library_service.search_videos_by_keywords()
 
 # project service controller
+
+def get_project_controller():
+    return project_service.get_project()
+
 def create_project_controller():
     print("here")
     return project_service.create_project()
