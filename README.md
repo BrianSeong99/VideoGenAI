@@ -48,7 +48,7 @@ Projects Page:
 - [x] [Backend]: Delete a Project
 - [x] [Backend]: Return Projects List in Pagination
 - [x] [Frontend]: Video Projects Page with Pagination to select desired project to work on.
-- [ ] [Frotnend]: Create Project
+- [x] [Frotnend]: Create Project & direct to Timeline Page
 - [x] [Frontend]: Remove Project
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 

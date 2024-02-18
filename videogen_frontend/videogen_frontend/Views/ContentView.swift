@@ -22,7 +22,7 @@ struct ContentView: View {
                 Text("Projects")
             }
             
-            TimelineView()
+//            TimelineView()
             .tabItem {
                 Image(systemName: "person.crop.circle")
                 Text("Profile Tab")

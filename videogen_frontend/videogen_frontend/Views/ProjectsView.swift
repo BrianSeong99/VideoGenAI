@@ -68,6 +68,11 @@ struct ProjectsView: View {
                         .padding()
                 }
                 UploadButtonComponent(isCreateProjectWindowPresented: $isCreateProjectWindowPresented)
+                    .sheet(isPresented: $isCreateProjectWindowPresented) {
+                        print("Sheet dismissed!")
+                    } content: {
+//                        AddArticleView()
+                    }
             }
             .navigationBarTitle("Projects", displayMode: .inline)
         }

@@ -17,6 +17,11 @@ struct ProjectListResponse: Decodable {
     let projects: [ProjectData]
 }
 
+struct CreateProjectResponse: Decodable {
+    let acknowledged: Bool
+    let inserted_id: String
+}
+
 class ProjectListModel: ObservableObject {
     @Published var projects: [ProjectData] = []
     @Published var page: Int = 0
@@ -80,7 +85,7 @@ class ProjectListModel: ObservableObject {
             }
     }
 
-    func createProject(project_title: String) {
+    func createProject(project_title: String, completion: @escaping (String?) -> Void) {
         let parameters: Parameters = [
             "project_title": project_title,
         ]
@@ -90,12 +95,19 @@ class ProjectListModel: ObservableObject {
         let urlString = "http://localhost:5000/v1/projects/create"
         AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseData { response in
+            .responseDecodable(of: CreateProjectResponse.self) { response in
                 switch response.result {
-                case .success:
-                    print("create success")
+                case .success(let createProjectResponse):
+                    if (createProjectResponse.acknowledged) {
+                        print("create success")
+                        completion(createProjectResponse.inserted_id)
+                    } else {
+                        print("create acknowledged false")
+                        completion(nil)
+                    }
                 case .failure(let error):
                     print(error)
+                    completion(nil)
                 }
             }
     }
