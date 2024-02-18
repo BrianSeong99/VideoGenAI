@@ -10,15 +10,19 @@ import Alamofire
 import Combine
 
 struct ProjectListResponse: Decodable {
+    let success: Bool
+    let totalCount: Int
+    let page: Int
+    let pageSize: Int
     let projects: [ProjectData]
-    let next_cursor: String?
 }
 
 class ProjectListModel: ObservableObject {
     @Published var projects: [ProjectData] = []
     @Published var page: Int = 0
+    @Published var totalCount: Int = 0
     
-    func getProjectList(next_page_or_refresh: Bool = false, limit: Int = 20) {
+    func getProjectList(next_page_or_refresh: Bool = false, limit: Int = 10) {
         let baseString = "http://localhost:5000/v1/projects/get_projects"
         if (next_page_or_refresh) {
             page += 1
@@ -32,6 +36,7 @@ class ProjectListModel: ObservableObject {
             .responseDecodable(of: ProjectListResponse.self) { response in
                 switch response.result {
                 case .success(let projectListResponse):
+                    self.totalCount = projectListResponse.totalCount;
                     if (next_page_or_refresh) {
                         DispatchQueue.main.async {
                             self.projects.append(contentsOf: projectListResponse.projects)

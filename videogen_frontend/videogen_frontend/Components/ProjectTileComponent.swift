@@ -11,12 +11,14 @@ struct ProjectTileComponent: View {
     
     @State private var scaleFactor: CGFloat
     @State private var isMagnified: Bool
-    @Binding var thumbnail_url: URL
+    var thumbnail_url: URL
+    var project_title: String
     
-    public init(thumbnail_url: Binding<URL>) {
-        self._thumbnail_url = thumbnail_url
+    public init(thumbnail_url: URL, project_title: String) {
+        self.thumbnail_url = thumbnail_url
         self._scaleFactor = State(initialValue: 1.0)
         self._isMagnified = State(initialValue: false)
+        self.project_title = project_title
     }
     
     private func toThumbnailURL(url: URL) -> URL {
@@ -32,20 +34,29 @@ struct ProjectTileComponent: View {
     }
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack {
             AsyncImage(url: toThumbnailURL(url: thumbnail_url)) { phase in
                 if let image = phase.image {
                     image.resizable()
-                         .aspectRatio(contentMode: .fill)
+                        .scaledToFill()
+//                        .frame(width: 150 * scaleFactor, height: 150 * scaleFactor)
+//                        .clipped()
                 } else if phase.error != nil {
                     Color.gray.opacity(0.3)
                 } else {
                     ProgressView()
                 }
             }
-            .frame(width: 150 * scaleFactor, height: 100 * scaleFactor)
-            .clipped()
             .cornerRadius(10 * scaleFactor)
+            .shadow(radius: 5)
+            Text(project_title)
+                .font(.headline)
+//                .padding(6)
+//                .background(Color.black.opacity(0.7))
+                .cornerRadius(5)
+                .foregroundColor(.white)
+//                .padding(8)
+            }
             .contextMenu {
                 Button(action: {
                     print("Export Project")
@@ -59,13 +70,11 @@ struct ProjectTileComponent: View {
                 }) {
                     Text("Remove")
                     Image(systemName: "trash")
-                }
             }
-            .zIndex(isMagnified ? 1 : 0)
         }
     }
 }
 
-//#Preview {
-//    VideoTileComponent(videoURL: URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!)
-//}
+#Preview {
+    ProjectTileComponent(thumbnail_url: URL(string: "https://res.cloudinary.com/demtzsiln/video/upload/e_preview:duration_12:max_seg_2:min_seg_dur_1/v1704760797/l2sc5xsrwrimyldyx9nt")!, project_title: "Test")
+}

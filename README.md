@@ -43,16 +43,10 @@ Library Page:
 - [-] [Frontend]: Video List Pagination Loading
 
 Projects Page:
-<<<<<<< HEAD
-- [-] [Backend]: Create Project and Save Project
-- [-] [Backend]: Save Current Editing Process in Database
-- [-] [Backend]: Return Projects List in Pagination
-=======
 - [x] [Backend]: Create Project and Save Project
 - [x] [Backend]: Update Current Editing Process in Database
 - [x] [Backend]: Delete a Project
 - [x] [Backend]: Return Projects List in Pagination
->>>>>>> backend
 - [-] [Frontend]: Video Projects Page with Pagination to select desired project to work on.
 - [ ] [Frotnend]: Create Project
 - [-] [Frontend]: Remove Project
@@ -69,9 +63,11 @@ Block Page:
 #### Improvements/Known Issues (Lower Priority):
 - [x] [Frontend][Bug] Efficient Library Videos Loading, app crashing because all videos are taking up the main thread.
 - [x] [Frontend][Improvement] Preview of the entire video clip
+- [ ] [Frontend][Improvement] Find ways to show that video that was just uploaded its still processing/indexing.
 - [ ] [Frontend][Improvement] Hide Search Bar when in edit mode.
 - [ ] [Backend][Bug] Remove video meta data in pinecone indexer when removing the video from cloudinary.
 - [ ] [Frontend][Improvement] Navigation Bar Title Style.
+- [ ] [Frontend][Bug] Projects Page Long Press Position Error
 
 ### Future Scope
 - [ ] [Backend]: Script to Video Footage selections in sequence generation

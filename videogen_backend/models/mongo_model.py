@@ -28,7 +28,9 @@ def get_projects_from_mongodb(page, limit):
 
     return {
         "success": True,
-        "metadata": {"totalCount": collection.count_documents({}), "page": page, "pageSize": limit},
+        "totalCount": collection.count_documents({}), 
+        "page": page, 
+        "pageSize": limit,
         "projects": projects
     }
 

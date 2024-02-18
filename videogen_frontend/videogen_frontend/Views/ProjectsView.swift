@@ -9,46 +9,78 @@ import SwiftUI
 
 struct ProjectsView: View {
     
-    @State private var projectList: [ProjectData] = []
+//    @State private var projectList: [ProjectData] = []
+    @State private var projectList_left: [ProjectData] = []
+    @State private var projectList_right: [ProjectData] = []
     @State private var isFetchingMore = false
     @State private var isCreateProjectWindowPresented: Bool = false
-
     @StateObject private var projectListModel = ProjectListModel()
     
     private func loadMoreContentIfNeeded() {
-        guard !isFetchingMore else { return }
-        isFetchingMore = true
-        projectListModel.getProjectList(next_page_or_refresh: true)
+        if (projectListModel.totalCount > projectList_left.count + projectList_right.count) {
+            guard !isFetchingMore else { return }
+            isFetchingMore = true
+            projectListModel.getProjectList(next_page_or_refresh: true)
+        }
+    }
+    
+    private func projectTileComponent(currentIndex: Int, leftOrRight: Bool) -> some View {
+        if (leftOrRight) {
+            ProjectTileComponent(
+                thumbnail_url: URL(string: self.projectList_left[currentIndex].thumbnail_url)!,
+        project_title: self.projectList_left[currentIndex].project_title
+            )
+            .onTapGesture {
+                // jump to project details page (Timeline Page)
+                print("tapped left")
+                print(currentIndex)
+            }
+            .onAppear {
+                if currentIndex == self.projectList_left.count - 1 {
+                    print(currentIndex)
+                    loadMoreContentIfNeeded()
+                }
+            }
+        } else {
+            ProjectTileComponent(
+                thumbnail_url: URL(string: self.projectList_right[currentIndex].thumbnail_url)!,
+        project_title: self.projectList_right[currentIndex].project_title
+            )
+            .onTapGesture {
+                // jump to project details page (Timeline Page)
+                print("tapped right")
+                print(currentIndex)
+            }
+            .onAppear {
+                if currentIndex == self.projectList_right.count - 1 {
+                    print(currentIndex)
+                    loadMoreContentIfNeeded()
+                }
+            }
+        }
     }
     
     var body: some View {
         NavigationView {
             ZStack {
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 2) {
-                        ForEach(0..<self.projectList.count, id: \.self) { index in
-                            ProjectTileComponent(
-                                thumbnail_url: Binding(
-                                    get: { URL(string: self.projectList[index].thumbnail_url)! },
-                                    set: { _ in }
-                                )
-                            )
-                            .onTapGesture {
-                                // jump to project details page (Timeline Page)
+                    HStack(alignment: .top){
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100, maximum: 150))], spacing: 20) {
+                            ForEach(0..<self.projectList_left.count, id: \.self) { index in
+                                projectTileComponent(currentIndex: index, leftOrRight: true)
                             }
-                            .onAppear {
-                                if index == self.projectList.count - 1 {
-                                    print(index)
-                                    loadMoreContentIfNeeded()
-                                }
+                        }
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100, maximum: 150))], spacing: 20) {
+                            ForEach(0..<self.projectList_right.count, id: \.self) { index in
+                                projectTileComponent(currentIndex: index, leftOrRight: false)
                             }
                         }
                     }
-                    .padding()
-                    if isFetchingMore {
-                        ProgressView()
-                            .padding()
-                    }
+                }
+                .padding(.horizontal, 20)
+                if isFetchingMore {
+                    ProgressView()
+                        .padding()
                 }
                 UploadButtonComponent(isCreateProjectWindowPresented: $isCreateProjectWindowPresented)
             }
@@ -58,7 +90,9 @@ struct ProjectsView: View {
             projectListModel.getProjectList(next_page_or_refresh: false)
         }
         .onChange(of: projectListModel.projects) { _, _ in
-            self.projectList = projectListModel.projects
+            let projectList = projectListModel.projects
+            self.projectList_left = projectList.enumerated().compactMap { $0.offset % 2 == 0 ? $0.element : nil }
+            self.projectList_right = projectList.enumerated().compactMap { $0.offset % 2 != 0 ? $0.element : nil }
             isFetchingMore = false
         }
     }
