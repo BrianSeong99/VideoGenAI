@@ -26,5 +26,18 @@ struct ProjectData: Decodable, Equatable {
     let updated_at: Float
     var project_title: String
     var thumbnail_url: String
-    var blocks: [Match]
+    var blocks: [BlockData]
+}
+
+extension ProjectData {
+    static var placeholder: ProjectData {
+        return ProjectData(
+            _id: "",
+            created_at: 0,
+            updated_at: 0,
+            project_title: "Placeholder",
+            thumbnail_url: "",
+            blocks: []
+        )
+    }
 }

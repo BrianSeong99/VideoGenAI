@@ -12,8 +12,9 @@ enum BlockType: String, Decodable {
     case Prompted = "Prompted"
 }
 
-struct BlockData: Decodable, Equatable{
+struct BlockData: Decodable, Equatable, Identifiable{
     let block_id: String
+    var id: String { block_id }
     let type: BlockType
     var matches: [Match]?
     var prompt: String

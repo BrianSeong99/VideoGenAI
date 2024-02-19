@@ -12,8 +12,17 @@ struct BlockRowComponent: View {
 
     @State var blockData: BlockData
 
-    init(blockData: BlockData) {
-        self.blockData = blockData
+    init(blockData: BlockData?) {
+        if (blockData == nil) {
+            self.blockData = BlockData(
+                block_id: UUID().uuidString,
+                type: BlockType.Prompted,
+                matches: nil,
+                prompt: "Enter Your Prompt"
+            )
+        } else {
+            self.blockData = blockData!
+        }
     }
     
     private func toThumbnailURL(url: URL) -> URL {
@@ -89,6 +98,7 @@ struct BlockRowComponent: View {
                 .padding()
             }
         }
+        
     }
 }
 

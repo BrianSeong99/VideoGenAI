@@ -8,36 +8,36 @@
 import SwiftUI
 
 struct BlockView: View {
-    @State private var block_id: String
-    @State private var promptString: String
-    @State var blockIndex: Int
-    @State var blockData: BlockData
+    @Binding var block_id: String
+    @Binding private var promptString: String
+    @Binding var blockIndex: Int
+    @Binding var blockData: BlockData
+    let project_id: String
+    @State var projectData: ProjectData? = nil
     
     @StateObject var blockModel: BlockModel = BlockModel()
+    @StateObject var projectListModel: ProjectListModel = ProjectListModel()
         
-    init(blockIndex: Int, block_id: String?, promptString: String?, matches: [Match]? = []) {
-        var _block_id: String
-        var _promptString: String
-        var _matches: [Match]
-        if (block_id != nil && promptString != nil && matches != nil) {
-            _block_id = block_id!
-            _promptString = promptString!
-            _matches = matches!
+    init(project_id: String, blockIndex: Binding<Int>, block_id: Binding<String>, promptString: Binding<String>, blockData: Binding<BlockData>) {
+        self._block_id = block_id
+        self._promptString = promptString
+        self._blockIndex = blockIndex
+        self._blockData = blockData
+        self.project_id = project_id
+    }
+    
+    private func replaceVideoExtensionWithJPG(for urlString: String) -> String {
+        print(urlString)
+        var returnString = urlString
+        if urlString.hasSuffix(".mp4") {
+            returnString = urlString.replacingOccurrences(of: ".mp4", with: ".jpg")
+        } else if urlString.hasSuffix(".mov") {
+            print("before", returnString)
+            returnString = urlString.replacingOccurrences(of: ".mov", with: ".jpg")
+            print("after", returnString)
         }
-        else {
-            _block_id = UUID().uuidString
-            _promptString = "Enter Prompt"
-            _matches = []
-        }
-        self.block_id = _block_id
-        self.promptString = _promptString
-        self.blockIndex = blockIndex
-        self.blockData = BlockData(
-            block_id: _block_id,
-            type: BlockType.Prompted,
-            matches: _matches,
-            prompt: _promptString
-        )
+        print(returnString)
+        return returnString
     }
     
     private func searchVideosWithPrompt() {
@@ -58,10 +58,10 @@ struct BlockView: View {
     
     var body: some View {
         VStack {
-            SearchBarComponent(text: $promptString, onSubmit: searchVideosWithPrompt)
+            SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: searchVideosWithPrompt)
             NavigationStack {
                 List {
-                    ForEach(blockModel.matches, id: \.id) { match in
+                    ForEach(blockData.matches!, id: \.id) { match in
                         PromptResultRowComponent(
                             videoURL: URL(string: match.metadata.url) ?? URL(string: "https://example.com")!,
                             score: Float(match.score)
@@ -71,17 +71,36 @@ struct BlockView: View {
                     .onMove { from, to in
                         self.blockData.matches?.move(fromOffsets: from, toOffset: to)
                     }
+                    .onChange(of: self.blockData.matches) {
+                        if (self.blockData.matches != nil && self.blockData.matches!.count > 0) {
+                            self.projectData!.thumbnail_url = replaceVideoExtensionWithJPG(
+                                for: self.blockData.matches![0].metadata.url)
+                        }
+                        if (self.projectData?.blocks.count ?? 0 <= blockIndex) {
+                            self.projectData?.blocks.append(self.blockData)
+                        } else {
+                            self.projectData?.blocks[blockIndex] = self.blockData
+                        }
+                        print("prepared!", self.projectData!)
+                        // TODO, projectData's block is always empty!
+                        projectListModel.updateProject(projectData: self.projectData!)
+                    }
                 }
             }
             Spacer()
+                .onAppear() {
+                    projectListModel.getProject(project_id: project_id) { newProjectData in
+                        self.projectData = newProjectData
+                    }
+                }
         }
     }
 }
 
-struct BlockView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _: ProjectData = ProjectData(
-            _id: "Test_ID", created_at: 0.0, updated_at: 0.0, project_title: "TEST_TITLE", thumbnail_url: "URL.jpg", blocks: [])
-        BlockView(blockIndex: 0, block_id: UUID().uuidString, promptString: "Sunset beach", matches: []);
-    }
-}
+//struct BlockView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let _: ProjectData = ProjectData(
+//            _id: "Test_ID", created_at: 0.0, updated_at: 0.0, project_title: "TEST_TITLE", thumbnail_url: "URL.jpg", blocks: [])
+//        BlockView(blockIndex: 0, block_id: UUID().uuidString, promptString: "Sunset beach", matches: []);
+//    }
+//}

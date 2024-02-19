@@ -105,7 +105,7 @@ struct LibraryView: View {
         NavigationView {
             ZStack() {
                 VStack() {
-                    SearchBarComponent(text: $searchText, onSubmit: searchLibraryWithText)
+                    SearchBarComponent(text: $searchText, displayText: "Search with Keywords", onSubmit: searchLibraryWithText)
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 2) {
                             ForEach(0..<AssetLibrary.count, id: \.self) { index in

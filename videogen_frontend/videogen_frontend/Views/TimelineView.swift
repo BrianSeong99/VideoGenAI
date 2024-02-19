@@ -9,11 +9,23 @@ import SwiftUI
 
 struct TimelineView: View {
     @State var projectId: String
-    @State var projectData: ProjectData
+    @State var projectData: ProjectData?
     @StateObject private var projectListModel = ProjectListModel()
+        
+    @State private var navigateToBlockView = false
     
     @State private var isEditing = false
     @State private var titleText = "Untitled Project"
+    
+    @State var block_id: String = UUID().uuidString
+    @State var promptString: String = ""
+    @State var blockIndex: Int = 0
+    @State var blockData: BlockData = BlockData(
+        block_id: "",
+        type: BlockType.Prompted,
+        matches: nil,
+        prompt: ""
+    )
 
     private var EditableTitle: some View {
         Group {
@@ -30,52 +42,76 @@ struct TimelineView: View {
     }
     
     private func deleteRow(at offsets: IndexSet) {
-        self.projectData.blocks.remove(atOffsets: offsets)
+        self.projectData!.blocks.remove(atOffsets: offsets)
+    }
+    
+    private func promptSubmitted(){
+        blockIndex = projectData!.blocks.count
+        block_id = UUID().uuidString
+        blockData = BlockData(
+            block_id: block_id,
+            type: BlockType.Prompted,
+            matches: [],
+            prompt: promptString
+        )
+        self.navigateToBlockView = true;
     }
     
     var body: some View {
         NavigationView {
             VStack(){
                 EditableTitle
-                    .onAppear() {
-                        projectListModel.getProject(project_id: projectId) { projectData in
-                            if let projectData = projectData {
-                                print(projectData)
-                                titleText = projectData.project_title
-                                print("Project Fetch Success")
-                            } else {
-                                print("Project Fetch Failed")
-                            }
-                        }
-                    }
                     .onChange(of: projectData) { _, _ in
-                        projectListModel.updateProject(projectData: projectData)
+                        projectListModel.updateProject(projectData: projectData!)
                     }
                     .onChange(of: titleText) { _, _ in
-                        projectData.project_title = titleText
+                        projectData!.project_title = titleText
                     }
                 NavigationStack {
-                    List {
-                        ForEach(projectData.blocks, id: \.id) { block in
-                            Text(block.id)
-//                            PromptResultRowComponent(
-//                                videoURL: URL(string: match.metadata.url) ?? URL(string: "https://example.com")!,
-//                                score: Float(match.score)
-//                            )
-                        }
-                        .onDelete(perform: deleteRow)
-                        .onMove { from, to in
-                            self.projectData.blocks.move(fromOffsets: from, toOffset: to)
-                        }
+//                    List {
+//                        ForEach(projectData.blocks) { block in
+//                            BlockRowComponent(blockData: block)
+//                        }
+//                        .onDelete(perform: deleteRow)
+//                        .onMove { from, to in
+//                            self.projectData.blocks.move(fromOffsets: from, toOffset: to)
+//                        }
+//                    }
+                    Divider()
+                    SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: promptSubmitted)
+                    Spacer()
+                }
+            }
+            .onAppear() {
+                projectListModel.getProject(project_id: projectId) { projectData in
+                    if let projectData = projectData {
+                        print(projectData)
+                        titleText = projectData.project_title
+                        print("Project Fetch Success")
+                    } else {
+                        print("Project Fetch Failed")
                     }
                 }
-                Spacer()
+                self.blockIndex = projectData!.blocks.count
             }
             .navigationBarItems(
                 trailing: Button(isEditing ? "Done" : "Edit") {
                     isEditing.toggle()
                 }
             )
+            .background(
+                NavigationLink(destination: BlockView(
+                    project_id: projectId,
+                    blockIndex: $blockIndex,
+                    block_id: $block_id,
+                    promptString: $promptString,
+                    blockData: $blockData
+                ), isActive: $navigateToBlockView) {
+                    EmptyView()
+                }
+            )
+            Spacer()
+
         }
     }
 }

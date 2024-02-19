@@ -54,9 +54,9 @@ Projects Page:
 Timeline Page:
 - [x] [Frontend]: Project Title updates
 - [x] [Frontend]: Q&A Block Component
-- [ ] [Frontend]: Video Timeline page for multiple video selection blocks and place the selected footage in a desired sequence.
+- [x] [Frontend]: Video Timeline page for multiple video selection blocks and place the selected footage in a desired sequence.
 - [ ] [Frontend]: Update Video Sequence in frontend and reflects in the database
-- [ ] [Frontend]: Preview Function
+- [ ] [Frontend]: Preview Entire Timeline
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 - [x] [Backend]: Get Project Details
 

@@ -122,6 +122,7 @@ class ProjectListModel: ObservableObject {
             "thumbnail_url": projectData.thumbnail_url,
             "blocks": projectData.blocks
         ]
+        print(projectData.blocks)
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]

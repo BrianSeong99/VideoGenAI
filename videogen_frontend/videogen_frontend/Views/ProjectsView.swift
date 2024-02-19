@@ -18,6 +18,7 @@ struct ProjectsView: View {
     @State private var navigateToTimelineView = false
     @State private var insertedIdForTimelineView: String? = nil
     @State private var navigateToTimelineViewProjectData: ProjectData? = nil
+    @State private var defaultProjectData = ProjectData.placeholder
     
     private func loadMoreContentIfNeeded() {
         if (projectListModel.totalCount > projectList_left.count + projectList_right.count) {
@@ -102,16 +103,12 @@ struct ProjectsView: View {
             }
             .navigationBarTitle("Projects", displayMode: .inline)
             .background(
-                NavigationLink(destination: TimelineView(projectId: insertedIdForTimelineView ?? "", projectData: self.navigateToTimelineViewProjectData ?? ProjectData(
-                        _id: "65d156f6e5aff7bbf2eb7f3f",
-                        created_at: 1708218102.6884632,
-                        updated_at: 1708218102.6884632,
-                        project_title: "two more things",
-                        thumbnail_url: "https://res.cloudinary.com/demtzsiln/video/upload/v1708079752/s6gl22ltwnnoxgppbhgc.jpg",
-                        blocks: []
-                    )), isActive: $navigateToTimelineView) {
-                    EmptyView()
-                }
+                NavigationLink(destination: TimelineView(
+                        projectId: insertedIdForTimelineView ?? ""
+//                        projectData: navigateToTimelineViewProjectData ?? defaultProjectData
+                    ), isActive: $navigateToTimelineView) {
+                        EmptyView()
+                    }
             )
         }
         .onAppear {

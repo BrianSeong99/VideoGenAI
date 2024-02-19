@@ -9,11 +9,12 @@ import SwiftUI
 
 struct SearchBarComponent: View {
     @Binding var text: String
+    var displayText: String
     var onSubmit: () -> Void = {}
 
     var body: some View {
         HStack {
-            TextField("Search with Keywords", text: $text)
+            TextField(displayText, text: $text)
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
