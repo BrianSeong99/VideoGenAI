@@ -14,8 +14,8 @@ struct BlockView: View {
     @State var blockData: BlockData
     
     @StateObject var blockModel: BlockModel = BlockModel()
-    
-    init(blockIndex: Int, block_id: String?, promptString: String?, matches: [Match]?) {
+        
+    init(blockIndex: Int, block_id: String?, promptString: String?, matches: [Match]? = []) {
         var _block_id: String
         var _promptString: String
         var _matches: [Match]
@@ -68,9 +68,11 @@ struct BlockView: View {
                         )
                     }
                     .onDelete(perform: deleteRow)
+                    .onMove { from, to in
+                        self.blockData.matches?.move(fromOffsets: from, toOffset: to)
+                    }
                 }
             }
-            .padding(.top, 10)
             Spacer()
         }
     }
@@ -78,7 +80,7 @@ struct BlockView: View {
 
 struct BlockView_Previews: PreviewProvider {
     static var previews: some View {
-        let projectData: ProjectData = ProjectData(
+        let _: ProjectData = ProjectData(
             _id: "Test_ID", created_at: 0.0, updated_at: 0.0, project_title: "TEST_TITLE", thumbnail_url: "URL.jpg", blocks: [])
         BlockView(blockIndex: 0, block_id: UUID().uuidString, promptString: "Sunset beach", matches: []);
     }

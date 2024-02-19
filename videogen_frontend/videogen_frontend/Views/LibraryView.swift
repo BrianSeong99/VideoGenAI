@@ -12,7 +12,7 @@ import Combine
 
 struct LibraryView: View {
     
-    @State private var AssetLibrary: [VideoResource] = []
+    @State private var AssetLibrary: [VideoStruct] = []
     @State private var searchText: String = ""
     @State private var isEditing: Bool = false
     @State private var isFetchingMore = false

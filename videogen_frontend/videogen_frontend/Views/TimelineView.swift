@@ -29,11 +29,14 @@ struct TimelineView: View {
 
     }
     
+    private func deleteRow(at offsets: IndexSet) {
+        self.projectData.blocks.remove(atOffsets: offsets)
+    }
+    
     var body: some View {
         NavigationView {
             VStack(){
                 EditableTitle
-//                Text("Timeline for Project ID: \(projectId)")
                     .onAppear() {
                         projectListModel.getProject(project_id: projectId) { projectData in
                             if let projectData = projectData {
@@ -50,14 +53,29 @@ struct TimelineView: View {
                     }
                     .onChange(of: titleText) { _, _ in
                         projectData.project_title = titleText
-//                            projectListModel.updateProject(projectData: projectData)
                     }
-                    Spacer()
+                NavigationStack {
+                    List {
+                        ForEach(projectData.blocks, id: \.id) { block in
+                            Text(block.id)
+//                            PromptResultRowComponent(
+//                                videoURL: URL(string: match.metadata.url) ?? URL(string: "https://example.com")!,
+//                                score: Float(match.score)
+//                            )
+                        }
+                        .onDelete(perform: deleteRow)
+                        .onMove { from, to in
+                            self.projectData.blocks.move(fromOffsets: from, toOffset: to)
+                        }
+                    }
+                }
+                Spacer()
             }
-//                .navigationBarTitle(EditableTitle, displayMode: .inline)
-            .navigationBarItems(trailing: Button(isEditing ? "Done" : "Edit") {
-                                isEditing.toggle()
-                            })
+            .navigationBarItems(
+                trailing: Button(isEditing ? "Done" : "Edit") {
+                    isEditing.toggle()
+                }
+            )
         }
     }
 }

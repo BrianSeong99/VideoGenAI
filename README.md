@@ -50,19 +50,20 @@ Projects Page:
 - [x] [Frontend]: Video Projects Page with Pagination to select desired project to work on.
 - [x] [Frotnend]: Create Project & direct to Timeline Page
 - [x] [Frontend]: Remove Project
-- [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 
 Timeline Page:
-- [ ] [Frontend]: Timeline Page Layout
 - [x] [Frontend]: Project Title updates
-- [ ] [Frontend]: Q&A Block Component
+- [x] [Frontend]: Q&A Block Component
 - [ ] [Frontend]: Video Timeline page for multiple video selection blocks and place the selected footage in a desired sequence.
 - [ ] [Frontend]: Update Video Sequence in frontend and reflects in the database
+- [ ] [Frontend]: Preview Function
+- [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 - [x] [Backend]: Get Project Details
 
 Block Page:
 - [x] [Frontend]: Block page for relevant footage queries and preview.
 - [x] [Frontend]: Remove Video if disliked
+- [ ] [Frontend]: Reorder Responses
 
 #### Improvements/Known Issues (Lower Priority):
 - [x] [Backend][Improvement] Upload Large files that are larger than 100MB per upload request

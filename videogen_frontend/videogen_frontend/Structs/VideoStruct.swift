@@ -12,7 +12,7 @@ struct uploadResponse: Decodable {
 }
 
 struct VideoLibraryResponse: Decodable {
-    let resources: [VideoResource]
+    let resources: [VideoStruct]
     let next_cursor: String?
 }
 
@@ -20,10 +20,10 @@ struct SearchVideoResponse: Decodable {
     let total_count: Int
     let time: Int
     let next_cursor: String?
-    let resources: [VideoResource]
+    let resources: [VideoStruct]
 }
 
-struct VideoResource: Decodable, Equatable {
+struct VideoStruct: Decodable, Equatable {
     let asset_id: String
     let public_id: String
     let format: String
@@ -55,6 +55,23 @@ struct VideoResource: Decodable, Equatable {
         case url
         case secure_url
     }
+    
+    init(asset_id: String, public_id: String, format: String, version: Int, resource_type: String, type: String, created_at: String, bytes: Int, width: Int, height: Int, folder: String, tags: [String]? = [], url: String, secure_url: String) {
+            self.asset_id = asset_id
+            self.public_id = public_id
+            self.format = format
+            self.version = version
+            self.resource_type = resource_type
+            self.type = type
+            self.created_at = created_at
+            self.bytes = bytes
+            self.width = width
+            self.height = height
+            self.folder = folder
+            self.tags = tags
+            self.url = url
+            self.secure_url = secure_url
+        }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

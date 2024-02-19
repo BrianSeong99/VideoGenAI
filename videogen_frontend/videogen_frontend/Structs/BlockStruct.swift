@@ -27,7 +27,7 @@ struct PineconeSearchResponse: Decodable {
 
 struct Match: Decodable, Equatable {
     let id: String
-    let metadata: VideoResource
+    let metadata: VideoStruct
     let score: Double
     let values: [String]
 }

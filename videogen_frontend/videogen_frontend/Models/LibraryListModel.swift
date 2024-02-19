@@ -10,7 +10,7 @@ import Alamofire
 import Combine
 
 class LibraryListModel: ObservableObject {
-    @Published var videos: [VideoResource] = []
+    @Published var videos: [VideoStruct] = []
     @Published var next_cursor: String?
     
     func getAllVideoList(next_page: Bool = false, limit: Int = 20) {
