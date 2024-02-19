@@ -66,7 +66,7 @@ Block Page:
 #### Improvements/Known Issues (Lower Priority):
 - [x] [Frontend][Bug] Efficient Library Videos Loading, app crashing because all videos are taking up the main thread.
 - [x] [Frontend][Improvement] Preview of the entire video clip
-- [ ] [Frontend][Improvement] Find ways to show that video that was just uploaded its still processing/indexing.
+- [x] [Frontend][Improvement] For files returned without "tags", mark them as "INDEXING" instead
 - [ ] [Frontend][Improvement] Hide Search Bar when in edit mode.
 - [ ] [Backend][Bug] Remove video meta data in pinecone indexer when removing the video from cloudinary.
 - [ ] [Frontend][Improvement] Navigation Bar Title Style.

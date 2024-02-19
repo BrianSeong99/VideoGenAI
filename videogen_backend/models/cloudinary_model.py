@@ -33,7 +33,8 @@ def get_video_info_from_cloudinary(public_id):
         public_id,
         resource_type = "video",
         categorization = "azure_video_indexer", 
-        auto_tagging = 0.4
+        auto_tagging = 0.4,
+        fields = ["context", "tags", "format", "version", "resource_type", "type", "created_at", "width", "bytes", "height", "url", "secure_url"]
     )
 
 def get_videos_from_cloudinary(next_cursor, limit):
@@ -42,12 +43,16 @@ def get_videos_from_cloudinary(next_cursor, limit):
         result = cloudinary.api.resources(
             resource_type = "video",
             max_results = limit,
+            fields = ["context", "tags", "format", "version", "resource_type", "type", "created_at", "width", "bytes", "height", "url", "secure_url"],
+            direction = "desc"
         )
     else:
         result = cloudinary.api.resources(
             resource_type = "video",
             max_results = limit,
-            next_cursor = next_cursor
+            next_cursor = next_cursor,
+            fields = ["context", "tags", "format", "version", "resource_type", "type", "created_at", "width", "bytes", "height", "url", "secure_url"],
+            direction = "desc"
         )
     return result
 

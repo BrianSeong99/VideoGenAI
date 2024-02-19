@@ -114,7 +114,9 @@ struct LibraryView: View {
                                         get: { URL(string: AssetLibrary[index].secure_url)! },
                                         set: { _ in }
                                     ),
-                                    isSelected: .constant(self.selectedVideoIndexes.contains(index))
+                                    isSelected: .constant(self.selectedVideoIndexes.contains(index)),
+                                    isIndexing:
+                                        .constant(AssetLibrary[index].tags == [])
                                 )
                                 .onTapGesture {
                                     if isEditing {

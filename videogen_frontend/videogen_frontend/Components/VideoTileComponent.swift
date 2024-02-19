@@ -14,13 +14,15 @@ struct VideoTileComponent: View {
     @State private var isMagnified: Bool
     @Binding var videoURL: URL
     @Binding var isSelected: Bool
+    @Binding var isIndexing: Bool
 
     
-    public init(videoURL: Binding<URL>, isSelected: Binding<Bool>) {
+    public init(videoURL: Binding<URL>, isSelected: Binding<Bool>, isIndexing: Binding<Bool>) {
         self._videoURL = videoURL
         self._scaleFactor = State(initialValue: 1.0)
         self._isMagnified = State(initialValue: false)
         self._isSelected = isSelected
+        self._isIndexing = isIndexing
     }
     
     private func toThumbnailURL(url: URL) -> URL {
@@ -59,7 +61,15 @@ struct VideoTileComponent: View {
                 } else if phase.error != nil {
                     Color.gray.opacity(0.3)
                 } else {
-                    ProgressView()
+                    HStack{
+                        Spacer()
+                        VStack{
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                        Spacer()
+                    }
                 }
             }
             .frame(width: 80 * scaleFactor, height: 80 * scaleFactor)
@@ -91,6 +101,19 @@ struct VideoTileComponent: View {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundColor(.blue)
                     .padding(4) 
+            }
+            
+            if isIndexing {
+                Color.gray.opacity(0.5)
+                HStack{
+                    Spacer()
+                    VStack{
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
+                    Spacer()
+                }
             }
         }
     }
