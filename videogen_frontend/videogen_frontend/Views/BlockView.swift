@@ -52,17 +52,22 @@ struct BlockView: View {
         }
     }
     
+    private func deleteRow(at offsets: IndexSet) {
+        self.blockData.matches?.remove(atOffsets: offsets)
+    }
+    
     var body: some View {
         VStack {
             SearchBarComponent(text: $promptString, onSubmit: searchVideosWithPrompt)
-            ScrollView {
-                LazyVStack {
+            NavigationStack {
+                List {
                     ForEach(blockModel.matches, id: \.id) { match in
                         PromptResultRowComponent(
                             videoURL: URL(string: match.metadata.url) ?? URL(string: "https://example.com")!,
                             score: Float(match.score)
                         )
                     }
+                    .onDelete(perform: deleteRow)
                 }
             }
             .padding(.top, 10)

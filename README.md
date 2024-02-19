@@ -62,7 +62,7 @@ Timeline Page:
 
 Block Page:
 - [x] [Frontend]: Block page for relevant footage queries and preview.
-- [ ] [Frontend]: Remove Video if disliked
+- [x] [Frontend]: Remove Video if disliked
 
 #### Improvements/Known Issues (Lower Priority):
 - [x] [Backend][Improvement] Upload Large files that are larger than 100MB per upload request

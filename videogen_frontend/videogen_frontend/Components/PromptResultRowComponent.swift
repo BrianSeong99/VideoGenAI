@@ -105,8 +105,6 @@ struct PromptResultRowComponent: View {
                 Text("Score: " + String(format: "%.2f", self.score))
             }
             .padding(.horizontal, 20)
-            .padding(.top, 10)
-            Divider()
         }
     }
 }
