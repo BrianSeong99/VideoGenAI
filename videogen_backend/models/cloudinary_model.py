@@ -6,7 +6,8 @@ from config import CLOUD_NAME, API_KEY, API_SECRET
 config = cloudinary.config(secure=True)
 
 def upload_video_to_cloudinary(filepath):
-    cloudinary_response = cloudinary.uploader.upload(
+    
+    cloudinary_response = cloudinary.uploader.upload_large(
         filepath,
         resource_type = "video",
         # categorization = "google_video_tagging", 

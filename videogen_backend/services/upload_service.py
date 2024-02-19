@@ -6,7 +6,7 @@ import os
 import time
 import json
 from services.query_service import get_video_info
-from models.cloudinary_model import upload_video_to_cloudinary
+from models.cloudinary_model import upload_video_to_cloudinary, get_video_info_from_cloudinary
 from models.openai_model import get_video_metadata_embedding
 from models.pinecone_model import upsert_video_to_pinecone
 from utils.tmp_folder_manager import save_file_to_tmp_folder, get_filenames, rename_file, delete_file_from_tmp_folder
@@ -37,7 +37,7 @@ def cloudinary_webhook():
     print("deleted file from tmp folder", public_id)
     
     # Get video info from cloudinary and upsert to indexer
-    resp = get_video_info(public_id)
+    resp = get_video_info_from_cloudinary(public_id)
     if 'tags' in resp and len(resp['tags']) > 0 and 'secure_url' in resp and 'version' in resp:
         tags = resp['tags']
         url = resp['secure_url']
