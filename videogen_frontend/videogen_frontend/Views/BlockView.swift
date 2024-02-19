@@ -43,16 +43,30 @@ struct BlockView: View {
     private func searchVideosWithPrompt() {
         print("Searching for: \(promptString)")
         self.blockData.prompt = promptString
-        self.blockModel.searchWithPrompt(prompt: self.blockData.prompt)
+        self.blockModel.searchWithPrompt(prompt: self.blockData.prompt) { matches in
+            DispatchQueue.main.async {
+                if let matches = matches {
+                    self.blockData.matches = matches
+                }
+            }
+        }
     }
     
     var body: some View {
         VStack {
             SearchBarComponent(text: $promptString, onSubmit: searchVideosWithPrompt)
+            ScrollView {
+                LazyVStack {
+                    ForEach(blockModel.matches, id: \.id) { match in
+                        PromptResultRowComponent(
+                            videoURL: URL(string: match.metadata.url) ?? URL(string: "https://example.com")!,
+                            score: Float(match.score)
+                        )
+                    }
+                }
+            }
+            .padding(.top, 10)
             Spacer()
-        }
-        .onChange(of: blockModel.matches) {
-            self.blockData.matches = blockModel.matches
         }
     }
 }

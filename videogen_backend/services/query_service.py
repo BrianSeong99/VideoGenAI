@@ -37,7 +37,7 @@ async def query_videos():
         )
     print(results)
     return Response(
-        response=str(results),
+        response=json.dumps(results),
         status=200,
         mimetype='application/json'
     )
