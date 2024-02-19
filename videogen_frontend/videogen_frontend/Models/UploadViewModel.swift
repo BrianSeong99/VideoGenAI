@@ -2,8 +2,6 @@ import Foundation
 import Alamofire
 import Combine
 
-struct DecodableType: Decodable { let url: String }
-
 class UploadViewModel: ObservableObject {
     @Published var uploadProgress: Float = 0.0
     @Published var isUploading: Bool = false
@@ -34,7 +32,7 @@ class UploadViewModel: ObservableObject {
                 self.uploadProgress = Float(progress.fractionCompleted)
             }
         }
-        .responseDecodable(of: DecodableType.self) { response in
+        .responseDecodable(of: uploadResponse.self) { response in
             DispatchQueue.main.async {
                 self.isUploading = false
                 print("Upload Complete")

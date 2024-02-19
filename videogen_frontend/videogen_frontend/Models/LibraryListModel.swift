@@ -9,18 +9,6 @@ import Foundation
 import Alamofire
 import Combine
 
-struct VideoLibraryResponse: Decodable {
-    let resources: [VideoResource]
-    let next_cursor: String?
-}
-
-struct SearchVideoResponse: Decodable {
-    let total_count: Int
-    let time: Int
-    let next_cursor: String?
-    let resources: [VideoResource]
-}
-
 class LibraryListModel: ObservableObject {
     @Published var videos: [VideoResource] = []
     @Published var next_cursor: String?

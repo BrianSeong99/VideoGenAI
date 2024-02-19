@@ -9,19 +9,6 @@ import Foundation
 import Alamofire
 import Combine
 
-struct ProjectListResponse: Decodable {
-    let success: Bool
-    let totalCount: Int
-    let page: Int
-    let pageSize: Int
-    let projects: [ProjectData]
-}
-
-struct CreateProjectResponse: Decodable {
-    let acknowledged: Bool
-    let inserted_id: String
-}
-
 class ProjectListModel: ObservableObject {
     @Published var projects: [ProjectData] = []
     @Published var page: Int = 0

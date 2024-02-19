@@ -7,6 +7,22 @@
 
 import Foundation
 
+struct uploadResponse: Decodable { 
+    let url: String 
+}
+
+struct VideoLibraryResponse: Decodable {
+    let resources: [VideoResource]
+    let next_cursor: String?
+}
+
+struct SearchVideoResponse: Decodable {
+    let total_count: Int
+    let time: Int
+    let next_cursor: String?
+    let resources: [VideoResource]
+}
+
 struct VideoResource: Decodable, Equatable {
     let asset_id: String
     let public_id: String

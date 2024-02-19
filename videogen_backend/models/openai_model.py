@@ -8,7 +8,7 @@ def get_embedding(text, model="text-embedding-ada-002"):
     return client.embeddings.create(input = [text], model=model).data[0].embedding
 
 def get_video_metadata_embedding(video_metadata, model="text-embedding-ada-002"):
-    inputs = video_metadata['tags'] + video_metadata['summary'].split(" ")
+    inputs = video_metadata['tags'] # + video_metadata['summary'].split(" ")
     metadata_embeddings = []
 
     while inputs:

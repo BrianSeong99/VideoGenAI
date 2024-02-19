@@ -64,6 +64,7 @@ Block Page:
 - [x] [Frontend]: Query page for relevant footage queries and preview.
 
 #### Improvements/Known Issues (Lower Priority):
+- [x] [Backend][Improvement] Upload Large files that are larger than 100MB per upload request
 - [x] [Frontend][Bug] Efficient Library Videos Loading, app crashing because all videos are taking up the main thread.
 - [x] [Frontend][Improvement] Preview of the entire video clip
 - [x] [Frontend][Improvement] For files returned without "tags", mark them as "INDEXING" instead

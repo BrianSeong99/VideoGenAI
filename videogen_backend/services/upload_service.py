@@ -41,21 +41,24 @@ def cloudinary_webhook():
     if 'tags' in resp and len(resp['tags']) > 0 and 'secure_url' in resp and 'version' in resp:
         tags = resp['tags']
         url = resp['secure_url']
-        preview_url = "https://res.cloudinary.com/" \
-            + CLOUD_NAME \
-            + "/video/upload/" \
-            + 'e_preview:duration_12:max_seg_2:min_seg_dur_1' \
-            + '/v' \
-            + str(resp['version']) \
-            + '/'+ public_id
         video_metadata = {
-            'tags': tags,
-            'url': url,
-            'preview_url': preview_url,
             'public_id': public_id,
+            'asset_id': resp['asset_id'],
+            'folder': resp['folder'],
+            'tags': tags,
+            'format': resp['format'],
             'version': resp['version'],
-            'summary': '' # TODO, add summary feature later.
+            'resource_type': resp['resource_type'],
+            'type': resp['type'],
+            'created_at': resp['created_at'],
+            'width': resp['width'],
+            'bytes': resp['bytes'],
+            'height': resp['height'],
+            'url': url,
+            'secure_url': resp['secure_url']
+            # 'summary': '' # TODO, add summary feature later.
         }
+
         metadata_embeddings = get_video_metadata_embedding(video_metadata)
         status = upsert_video_to_pinecone(public_id, metadata_embeddings, video_metadata)
         if status is False:

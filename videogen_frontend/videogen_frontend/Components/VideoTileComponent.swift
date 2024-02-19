@@ -77,19 +77,27 @@ struct VideoTileComponent: View {
 //            .cornerRadius(10 * scaleFactor)
             .contextMenu {
                 Button(action: {
-                    UIPasteboard.general.url = videoURL
-                    print("Copy Video URL")
+                    UIPasteboard.general.url = toPreviewURL(url: videoURL)
+                    print("Copy Preview URL")
                 }) {
-                    Text("Copy Link")
+                    Text("Copy Preview Link")
                     Image(systemName: "link")
                 }
                 
                 Button(action: {
-                    print("Save Video")
+                    UIPasteboard.general.url = videoURL
+                    print("Copy Full Video URL")
                 }) {
-                    Text("Save")
-                    Image(systemName: "square.and.arrow.down")
+                    Text("Copy Full Video Link")
+                    Image(systemName: "link")
                 }
+//                
+//                Button(action: {
+//                    print("Save Video")
+//                }) {
+//                    Text("Save")
+//                    Image(systemName: "square.and.arrow.down")
+//                }
             } preview: {
                 VideoPreviewComponent(videoURL: toPreviewURL(url: videoURL))
                     .animation(Animation.snappy(duration: 0.1), value: 0)

@@ -62,12 +62,12 @@ struct ProjectTileComponent: View {
                 .padding(8)
             }
             .contextMenu {
-                Button(action: {
-                    print("Export Project")
-                }) {
-                    Text("Export Project")
-                    Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
-                }
+//                Button(action: {
+//                    print("Export Project")
+//                }) {
+//                    Text("Export Project")
+//                    Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
+//                }
                 
                 Button(action: {
                     print("Remove Project")
