@@ -25,7 +25,7 @@ def get_videos_controller():
 def delete_videos_controller():
     return library_service.delete_videos()
 
-def query_videos_controller():
+def query_videos_library_controller():
     return library_service.search_videos_by_keywords()
 
 # project service controller

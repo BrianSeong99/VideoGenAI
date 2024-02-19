@@ -28,15 +28,55 @@ def cloudinary_webhook():
             status=201,
             mimetype='application/json'
         )
+    
     filenames_without_extension, filenames_with_extension = get_filenames(app.config['UPLOAD_FOLDER'])
     if public_id in filenames_without_extension:
         index = filenames_without_extension.index(public_id)
         delete_file_from_tmp_folder(os.path.join(app.config['UPLOAD_FOLDER'], filenames_with_extension[index]))
-    return Response(
-        response="OK",
-        status=200,
-        mimetype='application/json'
-    )
+    
+    print("deleted file from tmp folder", public_id)
+    
+    # Get video info from cloudinary and upsert to indexer
+    resp = get_video_info(public_id)
+    if 'tags' in resp and len(resp['tags']) > 0 and 'secure_url' in resp and 'version' in resp:
+        tags = resp['tags']
+        url = resp['secure_url']
+        preview_url = "https://res.cloudinary.com/" \
+            + CLOUD_NAME \
+            + "/video/upload/" \
+            + 'e_preview:duration_12:max_seg_2:min_seg_dur_1' \
+            + '/v' \
+            + str(resp['version']) \
+            + '/'+ public_id
+        video_metadata = {
+            'tags': tags,
+            'url': url,
+            'preview_url': preview_url,
+            'public_id': public_id,
+            'version': resp['version'],
+            'summary': '' # TODO, add summary feature later.
+        }
+        metadata_embeddings = get_video_metadata_embedding(video_metadata)
+        status = upsert_video_to_pinecone(public_id, metadata_embeddings, video_metadata)
+        if status is False:
+            return Response(
+                response="Failed to insert video metadata to indexer",
+                status=400,
+                mimetype='application/json'
+            )
+        print("result", status)
+        return Response(
+            response="Successfully inserted video metadata to indexer",
+            status=200,
+            mimetype='application/json'
+        )
+    else:
+        print("Failed to insert video metadata to indexer")
+        return Response(
+            response="Failed to insert video metadata to indexer",
+            status=400,
+            mimetype='application/json'
+        )
     
 def upload_videos():
     num_videos = request.args.get('num_videos', None)

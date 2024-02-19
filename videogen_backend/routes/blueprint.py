@@ -8,7 +8,7 @@ blueprint.route('/upload/videos', methods=['POST'])(upload_videos_controller)
 
 blueprint.route('/library/get_videos', methods=['GET'])(get_videos_controller)
 blueprint.route('/library/delete_videos', methods=['DELETE'])(delete_videos_controller)
-blueprint.route('/library/search', methods=['GET'])(query_videos_controller)
+blueprint.route('/library/search', methods=['GET'])(query_videos_library_controller)
 
 blueprint.route('/projects', methods=['GET'])(get_project_controller)
 blueprint.route('/projects', methods=['POST'])(create_project_controller)
