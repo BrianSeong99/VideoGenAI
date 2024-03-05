@@ -59,41 +59,42 @@ struct BlockView: View {
     var body: some View {
         VStack {
             SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: searchVideosWithPrompt)
-            NavigationStack {
-                List {
-                    ForEach(blockData.matches!, id: \.id) { match in
-                        PromptResultRowComponent(
-                            videoURL: URL(string: match.metadata.url) ?? URL(string: "https://example.com")!,
-                            score: Float(match.score)
-                        )
-                    }
-                    .onDelete(perform: deleteRow)
-                    .onMove { from, to in
-                        self.blockData.matches?.move(fromOffsets: from, toOffset: to)
-                    }
-                    .onChange(of: self.blockData.matches) {
-                        if (self.blockData.matches != nil && self.blockData.matches!.count > 0) {
-                            self.projectData!.thumbnail_url = replaceVideoExtensionWithJPG(
-                                for: self.blockData.matches![0].metadata.url)
-                        }
-                        if (self.projectData?.blocks.count ?? 0 <= blockIndex) {
-                            self.projectData?.blocks.append(self.blockData)
-                        } else {
-                            self.projectData?.blocks[blockIndex] = self.blockData
-                        }
-                        print("prepared!", self.projectData!)
-                        // TODO, projectData's block is always empty!
-                        projectListModel.updateProject(projectData: self.projectData!)
-                    }
+            List {
+                ForEach(blockData.matches!, id: \.id) { match in
+                    PromptResultRowComponent(
+                        videoURL: URL(string: match.metadata.url) ?? URL(string: "https://example.com")!,
+                        score: Float(match.score)
+                    )
                 }
-                .listStyle(PlainListStyle())
+                .onDelete(perform: deleteRow)
+                .onMove { from, to in
+                    self.blockData.matches?.move(fromOffsets: from, toOffset: to)
+                }
+                .onChange(of: self.blockData.matches) {
+                    if (self.blockData.matches != nil && self.blockData.matches!.count > 0) {
+                        self.projectData!.thumbnail_url = replaceVideoExtensionWithJPG(
+                            for: self.blockData.matches![0].metadata.url)
+                    }
+                    if (self.projectData?.blocks.count ?? 0 <= blockIndex) {
+                        self.projectData?.blocks.append(self.blockData)
+                    } else {
+                        self.projectData?.blocks[blockIndex] = self.blockData
+                    }
+                    print("prepared!", self.projectData!)
+                    // TODO, projectData's block is always empty!
+                    projectListModel.updateProject(projectData: self.projectData!)
+                }
             }
+            .listStyle(PlainListStyle())
             Spacer()
                 .onAppear() {
                     projectListModel.getProject(project_id: project_id) {
                         newProjectData in
                         self.projectData = newProjectData
                         print("appear here")
+                    }
+                    if (self.blockData.matches! == []) {
+                        searchVideosWithPrompt()
                     }
                 }
         }

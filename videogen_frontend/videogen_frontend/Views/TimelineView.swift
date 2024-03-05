@@ -37,12 +37,11 @@ struct TimelineView: View {
                 })
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-                .font(.title)
             } else {
                 Text(titleText)
-                    .font(.largeTitle) // Large title for better visibility
                     .fontWeight(.bold) // Bold font weight for prominence
-                    .padding() // Add padding for spacing
+//                    .padding() // Add padding for spacing
+                    .frame(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                     .onTapGesture {
                         self.isEditing = true // Enter editing mode when text is tapped
                     }
@@ -95,6 +94,11 @@ struct TimelineView: View {
             print("blockview", projectData!)
             self.titleText = projectData!.project_title
             self.blockIndex = projectData!.blocks.count
+            projectListModel.getProject(project_id: projectId) {
+                newProjectData in
+                self.projectData = newProjectData
+                print("appear here")
+            }
         }
         Spacer()
         .navigationBarTitleDisplayMode(.inline)
@@ -111,7 +115,7 @@ struct TimelineView: View {
         .onChange(of: projectData) { _, _ in
             projectListModel.updateProject(projectData: projectData!)
         }
-        .onChange(of: titleText) { _, _ in
+        .onChange(of: isEditing) { _, _ in
             projectData!.project_title = titleText
         }
         .background(

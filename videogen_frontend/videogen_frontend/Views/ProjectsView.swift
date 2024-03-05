@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProjectsView: View {
-    
+    @State private var projectList: [ProjectData] = []
     @State private var projectList_left: [ProjectData] = []
     @State private var projectList_right: [ProjectData] = []
     @State private var isFetchingMore = false
@@ -24,7 +24,10 @@ struct ProjectsView: View {
         if (projectListModel.totalCount > projectList_left.count + projectList_right.count) {
             guard !isFetchingMore else { return }
             isFetchingMore = true
-            projectListModel.getProjectList(next_page_or_refresh: true)
+            projectListModel.getProjectList(page_offset: projectListModel.page+1) {
+                _projects in
+                projectList = _projects
+            }
         }
     }
     
@@ -101,6 +104,19 @@ struct ProjectsView: View {
                         }
                     }
             }
+            .onAppear {
+                print("h")
+                projectListModel.getProjectList() {
+                    _projects in
+                    projectList = _projects
+                }
+            }
+            .onChange(of: projectList) { _, _ in
+                self.projectList_left = projectList.enumerated().compactMap { $0.offset % 2 == 0 ? $0.element : nil }
+                self.projectList_right = projectList.enumerated().compactMap { $0.offset % 2 != 0 ? $0.element : nil }
+                print(self.projectList_left.count, self.projectList_right.count)
+                isFetchingMore = false
+            }
             .navigationBarTitle("Projects", displayMode: .inline)
             .background(
                 NavigationLink(destination: TimelineView(
@@ -110,17 +126,6 @@ struct ProjectsView: View {
                         EmptyView()
                     }
             )
-        }
-        .onAppear {
-            projectListModel.getProjectList(next_page_or_refresh: false)
-        }
-        .onChange(of: projectListModel.projects) { _, _ in
-            let projectList = projectListModel.projects
-            print(projectList)
-            self.projectList_left = projectList.enumerated().compactMap { $0.offset % 2 == 0 ? $0.element : nil }
-            self.projectList_right = projectList.enumerated().compactMap { $0.offset % 2 != 0 ? $0.element : nil }
-            print(self.projectList_left.count, self.projectList_right.count)
-            isFetchingMore = false
         }
     }
 }

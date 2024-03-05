@@ -10,7 +10,7 @@ import Alamofire
 import Combine
 
 class ProjectListModel: ObservableObject {
-    @Published var projects: [ProjectData] = []
+//    @Published var projects: [ProjectData] = []
     @Published var page: Int = 0
     @Published var totalCount: Int = 0
     
@@ -30,14 +30,10 @@ class ProjectListModel: ObservableObject {
             }
     }
     
-    func getProjectList(next_page_or_refresh: Bool = false, limit: Int = 10) {
+    func getProjectList(page_offset: Int = 0, limit: Int = 10, completion: @escaping ([ProjectData]) -> Void) {
         let baseString = "http://34.125.61.118:5000/v1/projects/get_projects"
-        if (next_page_or_refresh) {
-            page += 1
-        } else {
-            page = 0
-        }
         let urlString = "\(baseString)?page=\(page)&limit=\(limit)"
+        self.page = page_offset
         
         AF.request(urlString)
             .validate()
@@ -45,18 +41,8 @@ class ProjectListModel: ObservableObject {
                 switch response.result {
                 case .success(let projectListResponse):
                     self.totalCount = projectListResponse.totalCount;
-                    if (next_page_or_refresh) {
-                        DispatchQueue.main.async {
-                            self.projects.append(contentsOf: projectListResponse.projects)
-                            print("continue", projectListResponse.projects.count)
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            self.projects = projectListResponse.projects
-                            print("first", projectListResponse.projects.count)
-                            print("getProjectList", projectListResponse.projects[0])
-                        }
-                    }
+                    completion(projectListResponse.projects)
+                    print("first", projectListResponse.projects.count)
                     if projectListResponse.projects.count < limit {
                         print("No more pages.")
                     } else {
@@ -82,7 +68,9 @@ class ProjectListModel: ObservableObject {
                 switch response.result {
                 case .success:
                     print("delete success")
-                    self.getProjectList(next_page_or_refresh: false)
+//                    self.getProjectList() { _projects in
+//                        self.projects = _projects
+//                    }
                 case .failure(let error):
                     print(error)
                 }
