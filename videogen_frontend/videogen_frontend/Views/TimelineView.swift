@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct TimelineView: View {
     @State var projectId: String
@@ -28,6 +29,11 @@ struct TimelineView: View {
         matches: nil,
         prompt: ""
     )
+    
+    @State private var showVideoPlayer = false
+    @State private var avPlayer: AVPlayer?
+    
+    private let videoPlayerModel = VideoPlayerModel()
     
     private var EditableTitle: some View {
         Group {
@@ -87,10 +93,21 @@ struct TimelineView: View {
         }
         return fullVideoList
     }
+    
+    private func playVideos() {
+        let fullVideoList = getFullVideoList()
+        videoPlayerModel.setupQueue(with: fullVideoList)
+        showVideoPlayer = true
+        videoPlayerModel.play()
+    }
 
     
     var body: some View {
         VStack(){
+            if showVideoPlayer {
+                VideoPlayerComponent(player: videoPlayerModel.getPlayer())
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 3)
+            }
             List {
                 ForEach(Array(projectData!.blocks.enumerated()), id: \.element.id) { index, block in
                     NavigationLink(destination:
@@ -129,10 +146,7 @@ struct TimelineView: View {
                 Button(isEditing ? "Done" : "Edit") {
                     isEditing.toggle()
                 }
-                Button(action: {
-                    let fullVideoList = getFullVideoList()
-                    print(fullVideoList)
-                }) {
+                Button(action: playVideos) {
                     Image(systemName: "play.circle")
                 }
                 Button(action: {

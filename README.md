@@ -39,8 +39,8 @@ Library Page:
 - [x] [Frontend]: Delete Selected Videos
 - [x] [Frontend]: Library Page Layout
 - [x] [Frontend]: Show Searched Result
-- [-] [Frontend]: Implement actions for preview buttons of videos, copy video url & safe video file.
-- [-] [Frontend]: Video List Pagination Loading
+- [x] [Frontend]: Implement actions for preview buttons of videos, copy video url & safe video file.
+- [x] [Frontend]: Video List Pagination Loading
 
 Projects Page:
 - [x] [Backend]: Create Project and Save Project
@@ -55,15 +55,15 @@ Timeline Page:
 - [x] [Frontend]: Project Title updates
 - [x] [Frontend]: Q&A Block Component
 - [x] [Frontend]: Video Timeline page for multiple video selection blocks and place the selected footage in a desired sequence.
-- [ ] [Frontend]: Update Video Sequence in frontend and reflects in the database
-- [ ] [Frontend]: Preview Entire Timeline
+- [-] [Frontend]: Update Video Sequence in frontend and reflects in the database
+- [x] [Frontend]: Preview Entire Timeline
 - [ ] [Frontend]: Video downloads as well as export to third party apps like CapCut.
 - [x] [Backend]: Get Project Details
 
 Block Page:
 - [x] [Frontend]: Block page for relevant footage queries and preview.
 - [x] [Frontend]: Remove Video if disliked
-- [ ] [Frontend]: Reorder Responses
+- [-] [Frontend]: Reorder Responses
 
 #### Improvements/Known Issues (Lower Priority):
 - [x] [Backend][Improvement] Upload Large files that are larger than 100MB per upload request
@@ -72,9 +72,9 @@ Block Page:
 - [x] [Frontend][Improvement] For files returned without "tags", mark them as "INDEXING" instead
 - [ ] [Frontend][Improvement] Hide Search Bar when in edit mode.
 - [ ] [Backend][Bug] Remove video meta data in pinecone indexer when removing the video from cloudinary.
-- [ ] [Frontend][Improvement] Navigation Bar Title Style.
+- [x] [Frontend][Improvement] Navigation Bar Title Style.
 - [x] [Frontend][Bug] Projects Page Long Press Position Error
-- [ ] [Frontend][Bug] Library Page and Projects page Pagination not working after actions(ex. Delete, Search, etc).
+- [x] [Frontend][Bug] Library Page and Projects page Pagination not working after actions(ex. Delete, Search, etc).
 
 ### Future Scope
 - [ ] [Backend]: Script to Video Footage selections in sequence generation
