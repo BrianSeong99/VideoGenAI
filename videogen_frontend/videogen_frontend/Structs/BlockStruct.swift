@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum BlockType: String, Decodable {
+enum BlockType: String, Codable {
     case Imported = "Imported"
     case Prompted = "Prompted"
 }
 
-struct BlockData: Decodable, Equatable, Identifiable{
+struct BlockData: Codable, Equatable, Identifiable{
     let block_id: String
     var id: String { block_id }
     let type: BlockType
@@ -26,7 +26,7 @@ struct PineconeSearchResponse: Decodable {
     let usage: Usage
 }
 
-struct Match: Decodable, Equatable {
+struct Match: Codable, Equatable {
     let id: String
     let metadata: VideoStruct
     let score: Double

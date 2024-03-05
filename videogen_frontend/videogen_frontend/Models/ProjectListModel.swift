@@ -21,6 +21,7 @@ class ProjectListModel: ObservableObject {
             .responseDecodable(of: ProjectData.self) { response in
                 switch response.result {
                 case .success(let projectData):
+                    print("getProject", projectData)
                     completion(projectData)
                 case .failure(let error):
                     print(error)
@@ -52,7 +53,8 @@ class ProjectListModel: ObservableObject {
                     } else {
                         DispatchQueue.main.async {
                             self.projects = projectListResponse.projects
-                            print("first", projectListResponse.projects.count, projectListResponse)
+                            print("first", projectListResponse.projects.count)
+                            print("getProjectList", projectListResponse.projects[0])
                         }
                     }
                     if projectListResponse.projects.count < limit {
@@ -115,28 +117,56 @@ class ProjectListModel: ObservableObject {
     }
 
     func updateProject(projectData: ProjectData) {
-        let parameters: Parameters = [
-            "_id": projectData._id,
-            "project_title": projectData.project_title,
-            "created_at": projectData.created_at,
-            "thumbnail_url": projectData.thumbnail_url,
-            "blocks": projectData.blocks
-        ]
-        print(projectData.blocks)
-        let headers: HTTPHeaders = [
-            "Content-Type": "application/json"
-        ]
-        let urlString = "http://localhost:5000/v1/projects"
-        AF.request(urlString, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-            .validate()
-            .responseData { response in
-                switch response.result {
-                case .success:
-                    print("update success")
-                case .failure(let error):
-                    print(error)
+        let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .secondsSince1970 // Adjust this based on your date format needs
+
+            do {
+                let jsonData = try encoder.encode(projectData)
+                guard let parameters = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
+                    print("Failed to convert JSON data to a dictionary")
+                    return
                 }
+
+                let headers: HTTPHeaders = ["Content-Type": "application/json"]
+                let urlString = "http://34.125.61.118:5000/v1/projects"
+
+                AF.request(urlString, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                    .validate()
+                    .responseData { response in
+                        switch response.result {
+                        case .success:
+                            print("Update success")
+                        case .failure(let error):
+                            print("Update failed: \(error)")
+                        }
+                    }
+            } catch {
+                print("Encoding failed: \(error)")
             }
+        
+        //        let parameters: Parameters = [
+//            "_id": projectData._id,
+//            "project_title": projectData.project_title,
+//            "created_at": projectData.created_at,
+//            "thumbnail_url": projectData.thumbnail_url,
+//            "blocks": []//projectData.blocks
+//        ]
+////        print(projectData.blocks)
+//        let headers: HTTPHeaders = [
+//            "Content-Type": "application/json"
+//        ]
+//        let urlString = "http://34.125.61.118:5000/v1/projects"
+//        AF.request(urlString, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+//            .validate()
+//            .responseData { response in
+//                switch response.result {
+//                case .success:
+//                    print("update success")
+//                case .failure(let error):
+//                    print("update failed")
+//                    print(error)
+//                }
+//            }
 
     }
 }

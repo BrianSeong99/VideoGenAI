@@ -57,7 +57,7 @@ struct BlockRowComponent: View {
             Text(blockData.prompt)
                 .bold()
                 .font(.title2)
-                .lineLimit(2)
+                .lineLimit(1)
                 .padding(.horizontal)
             ScrollView(.horizontal) {
                 HStack(spacing: 20) {

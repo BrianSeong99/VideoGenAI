@@ -104,8 +104,8 @@ struct ProjectsView: View {
             .navigationBarTitle("Projects", displayMode: .inline)
             .background(
                 NavigationLink(destination: TimelineView(
-                        projectId: insertedIdForTimelineView ?? ""
-//                        projectData: navigateToTimelineViewProjectData ?? defaultProjectData
+                        projectId: insertedIdForTimelineView ?? "",
+                        projectData: navigateToTimelineViewProjectData ?? defaultProjectData
                     ), isActive: $navigateToTimelineView) {
                         EmptyView()
                     }

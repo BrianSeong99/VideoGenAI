@@ -23,7 +23,7 @@ struct SearchVideoResponse: Decodable {
     let resources: [VideoStruct]
 }
 
-struct VideoStruct: Decodable, Equatable {
+struct VideoStruct: Codable, Equatable {
     let asset_id: String
     let public_id: String
     let format: String

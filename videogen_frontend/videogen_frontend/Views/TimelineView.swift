@@ -68,30 +68,23 @@ struct TimelineView: View {
                         projectData!.project_title = titleText
                     }
                 NavigationStack {
-//                    List {
-//                        ForEach(projectData.blocks) { block in
-//                            BlockRowComponent(blockData: block)
-//                        }
-//                        .onDelete(perform: deleteRow)
-//                        .onMove { from, to in
-//                            self.projectData.blocks.move(fromOffsets: from, toOffset: to)
-//                        }
-//                    }
+                    List {
+                        ForEach(projectData!.blocks) { block in
+                            BlockRowComponent(blockData: block)
+                        }
+                        .onDelete(perform: deleteRow)
+                        .onMove { from, to in
+                            self.projectData!.blocks.move(fromOffsets: from, toOffset: to)
+                        }
+                    }
                     Divider()
-                    SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: promptSubmitted)
                     Spacer()
+                    SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: promptSubmitted)
                 }
             }
             .onAppear() {
-                projectListModel.getProject(project_id: projectId) { projectData in
-                    if let projectData = projectData {
-                        print(projectData)
-                        titleText = projectData.project_title
-                        print("Project Fetch Success")
-                    } else {
-                        print("Project Fetch Failed")
-                    }
-                }
+                print("blockview", projectData)
+                self.titleText = projectData!.project_title
                 self.blockIndex = projectData!.blocks.count
             }
             .navigationBarItems(

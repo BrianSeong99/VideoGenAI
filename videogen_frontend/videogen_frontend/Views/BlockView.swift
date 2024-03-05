@@ -89,14 +89,16 @@ struct BlockView: View {
             }
             Spacer()
                 .onAppear() {
-                    projectListModel.getProject(project_id: project_id) { newProjectData in
+                    projectListModel.getProject(project_id: project_id) {
+                        newProjectData in
                         self.projectData = newProjectData
+                        print("appear here")
                     }
                 }
         }
     }
 }
-
+//
 //struct BlockView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        let _: ProjectData = ProjectData(

@@ -20,7 +20,7 @@ struct CreateProjectResponse: Decodable {
     let inserted_id: String
 }
 
-struct ProjectData: Decodable, Equatable {
+struct ProjectData: Codable, Equatable {
     let _id: String
     let created_at: Float
     let updated_at: Float
