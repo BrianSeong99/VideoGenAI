@@ -14,6 +14,8 @@ struct TimelineView: View {
         
     @State private var navigateToBlockView = false
     
+    @State private var isUpdate = false
+    
     @State private var isEditing = false
     @State private var titleText = "Untitled Project"
     
@@ -51,6 +53,7 @@ struct TimelineView: View {
     
     private func deleteRow(at offsets: IndexSet) {
         self.projectData!.blocks.remove(atOffsets: offsets)
+        isUpdate = true
     }
     
     private func promptSubmitted(){
@@ -69,6 +72,23 @@ struct TimelineView: View {
         }
     }
     
+    private func getFullVideoList() -> [URL] {
+        var fullVideoList: [URL] = []
+        if let blocks = projectData?.blocks {
+            for block in blocks {
+                if let matches = block.matches {
+                    for match in matches {
+                        if let url = URL(string: match.metadata.secure_url) {
+                            fullVideoList.append(url)
+                        }
+                    }
+                }
+            }
+        }
+        return fullVideoList
+    }
+
+    
     var body: some View {
         VStack(){
             List {
@@ -86,6 +106,7 @@ struct TimelineView: View {
                 .onDelete(perform: deleteRow)
                 .onMove { from, to in
                     self.projectData!.blocks.move(fromOffsets: from, toOffset: to)
+                    isUpdate = true
                 }
             }
             .listStyle(PlainListStyle())
@@ -104,18 +125,32 @@ struct TimelineView: View {
         Spacer()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
                     isEditing.toggle()
+                }
+                Button(action: {
+                    let fullVideoList = getFullVideoList()
+                    print(fullVideoList)
+                }) {
+                    Image(systemName: "play.circle")
+                }
+                Button(action: {
+                    // do sth, preview
+                }) {
+                    Image(systemName: "square.and.arrow.up")
                 }
             }
         }
         .navigationBarItems(
             leading: EditableTitle
         )
-        .onChange(of: projectData) { _, _ in
-            projectListModel.updateProject(projectData: projectData!) {
-                
+        .onChange(of: isUpdate) { _, _ in
+            if (isUpdate) {
+                projectListModel.updateProject(projectData: projectData!) {
+                    
+                }
+                isUpdate = false
             }
         }
         .onChange(of: isEditing) { _, _ in
