@@ -26,17 +26,28 @@ struct TimelineView: View {
         matches: nil,
         prompt: ""
     )
-
+    
     private var EditableTitle: some View {
         Group {
             if isEditing {
-                TextField("Enter project title", text: $titleText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                TextField("Enter project title", text: $titleText, onCommit: {
+                    // Actions to take when the user commits the edit
+                    isEditing.toggle()
+                    // Any additional logic to handle the updated title
+                })
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+                .font(.title)
             } else {
                 Text(titleText)
+                    .font(.largeTitle) // Large title for better visibility
+                    .fontWeight(.bold) // Bold font weight for prominence
+                    .padding() // Add padding for spacing
+                    .onTapGesture {
+                        self.isEditing = true // Enter editing mode when text is tapped
+                    }
             }
         }
-
     }
     
     private func deleteRow(at offsets: IndexSet) {
@@ -56,55 +67,64 @@ struct TimelineView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack(){
-                EditableTitle
-                    .onChange(of: projectData) { _, _ in
-                        projectListModel.updateProject(projectData: projectData!)
-                    }
-                    .onChange(of: titleText) { _, _ in
-                        projectData!.project_title = titleText
-                    }
-                NavigationStack {
-                    List {
-                        ForEach(projectData!.blocks) { block in
+        VStack(){
+            List {
+                ForEach(Array(projectData!.blocks.enumerated()), id: \.element.id) { index, block in
+                    NavigationLink(destination:
+                        BlockView(
+                            project_id: projectId,
+                            blockIndex: .constant(index),
+                            block_id: .constant(block.block_id),
+                            promptString: .constant(block.prompt),
+                            blockData: .constant(block)
+                        )) {
                             BlockRowComponent(blockData: block)
                         }
-                        .onDelete(perform: deleteRow)
-                        .onMove { from, to in
-                            self.projectData!.blocks.move(fromOffsets: from, toOffset: to)
-                        }
                     }
-                    .listStyle(PlainListStyle())
-                    Divider()
-                    Spacer()
-                    SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: promptSubmitted)
+                .onDelete(perform: deleteRow)
+                .onMove { from, to in
+                    self.projectData!.blocks.move(fromOffsets: from, toOffset: to)
                 }
             }
-            .onAppear() {
-                print("blockview", projectData)
-                self.titleText = projectData!.project_title
-                self.blockIndex = projectData!.blocks.count
-            }
-            .navigationBarItems(
-                trailing: Button(isEditing ? "Done" : "Edit") {
+            .listStyle(PlainListStyle())
+            Divider()
+            Spacer()
+            SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: promptSubmitted)
+        }
+        .onAppear() {
+            print("blockview", projectData!)
+            self.titleText = projectData!.project_title
+            self.blockIndex = projectData!.blocks.count
+        }
+        Spacer()
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(isEditing ? "Done" : "Edit") {
                     isEditing.toggle()
                 }
-            )
-            .background(
-                NavigationLink(destination: BlockView(
-                    project_id: projectId,
-                    blockIndex: $blockIndex,
-                    block_id: $block_id,
-                    promptString: $promptString,
-                    blockData: $blockData
-                ), isActive: $navigateToBlockView) {
-                    EmptyView()
-                }
-            )
-            Spacer()
-
+            }
         }
+        .navigationBarItems(
+            leading: EditableTitle
+        )
+        .onChange(of: projectData) { _, _ in
+            projectListModel.updateProject(projectData: projectData!)
+        }
+        .onChange(of: titleText) { _, _ in
+            projectData!.project_title = titleText
+        }
+        .background(
+            NavigationLink(destination: BlockView(
+                project_id: projectId,
+                blockIndex: $blockIndex,
+                block_id: $block_id,
+                promptString: $promptString,
+                blockData: $blockData
+            ), isActive: $navigateToBlockView) {
+                EmptyView()
+            }
+        )
     }
 }
 
