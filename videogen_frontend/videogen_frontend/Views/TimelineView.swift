@@ -62,7 +62,11 @@ struct TimelineView: View {
             matches: [],
             prompt: promptString
         )
-        self.navigateToBlockView = true;
+        var _projectData = self.projectData!
+        _projectData.blocks.append(blockData)
+        projectListModel.updateProject(projectData: _projectData) {
+            self.navigateToBlockView = true;
+        }
     }
     
     var body: some View {

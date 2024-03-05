@@ -43,6 +43,7 @@ struct BlockView: View {
             DispatchQueue.main.async {
                 if let matches = matches {
                     self.projectData!.blocks[blockIndex].matches = matches
+                    isUpdate = true
                 }
             }
         }
@@ -50,9 +51,7 @@ struct BlockView: View {
     
     private func deleteRow(at offsets: IndexSet) {
         print("offsets", offsets)
-        print(self.projectData!.blocks[blockIndex].matches?.count)
         self.projectData!.blocks[blockIndex].matches?.remove(atOffsets: offsets)
-        print(self.projectData!.blocks[blockIndex].matches?.count)
         isUpdate = true
     }
     
