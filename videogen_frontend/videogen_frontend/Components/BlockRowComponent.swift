@@ -54,51 +54,76 @@ struct BlockRowComponent: View {
 
     var body: some View {
         VStack{
-            Text(blockData.prompt)
-                .bold()
-                .font(.title2)
-                .lineLimit(1)
-                .padding(.horizontal)
-            ScrollView(.horizontal) {
-                HStack(spacing: 20) {
-                    ForEach(0..<(self.blockData.matches?.count ?? 0), id: \.self) { index in
-                        if let urlString = blockData.matches?[index].metadata.url, let validURL = URL(string: urlString) {
-                            AsyncImage(url: toThumbnailURL(url: validURL)) { phase in
-                                switch phase {
+            HStack{
+                Text("Prompt")
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 10)
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                Text(blockData.prompt)
+                    .bold()
+                    .font(.title2)
+                    .lineLimit(1)
+                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
+            }
+            .padding(.horizontal, 10)
+            Divider()
+                .padding(.vertical, 5)
+                .padding(.horizontal, 5)
+            HStack{
+                Text("Response")
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 10)
+                    .background(Color.orange)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                ScrollView(.horizontal) {
+                    HStack(spacing: 20) {
+                        ForEach(0..<(self.blockData.matches?.count ?? 0), id: \.self) { index in
+                            if let urlString = blockData.matches?[index].metadata.url, let validURL = URL(string: urlString) {
+                                AsyncImage(url: toThumbnailURL(url: validURL)) { phase in
+                                    switch phase {
                                     case .success(let image):
                                         image.resizable()
-                                             .aspectRatio(contentMode: .fill)
-                                             .frame(width: 160, height: 90)
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 160, height: 90)
                                     case .failure(_):
                                         Image(systemName: "photo")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
                                             .foregroundColor(.gray)
                                             .frame(width: 160, height: 90)
-
+                                        
                                     case .empty:
                                         ProgressView()
-                                        .frame(width: 160, height: 90)
-
+                                            .frame(width: 160, height: 90)
+                                        
                                     @unknown default:
                                         EmptyView()
-                                        .frame(width: 160, height: 90)
-
+                                            .frame(width: 160, height: 90)
+                                        
+                                    }
                                 }
+                            } else {
+                                Image(systemName: "photo.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.gray)
+                                    .frame(width: 160, height: 90)
                             }
-                        } else {
-                            Image(systemName: "photo.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.gray)
-                                .frame(width: 160, height: 90)
                         }
                     }
+                    .padding()
                 }
-                .padding()
             }
+            .padding(.horizontal, 10)
         }
-        
+        .padding(.vertical, 15)
+        .background(RoundedRectangle(cornerRadius: 10)
+            .fill(Color.white)
+            .shadow(color: .gray, radius: 5, x: 0, y: 2))
+        .padding(.horizontal, 10)
     }
 }
 
@@ -161,7 +186,7 @@ struct BlockRowComponent_Previews: PreviewProvider {
                     values: []
                 )
             ],
-            prompt: "TEST_PROMPT_TEST_PROMPT_TEST_PROMPT_TEST_PROMPT_TEST_PROMPT_TEST_PROMPT_"
+            prompt: "TEST_PROMPT"
         )
         
         BlockRowComponent(blockData: mockBlockData)

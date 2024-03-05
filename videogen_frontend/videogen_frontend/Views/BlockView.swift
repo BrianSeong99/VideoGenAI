@@ -86,6 +86,7 @@ struct BlockView: View {
                         projectListModel.updateProject(projectData: self.projectData!)
                     }
                 }
+                .listStyle(PlainListStyle())
             }
             Spacer()
                 .onAppear() {
@@ -98,7 +99,7 @@ struct BlockView: View {
         }
     }
 }
-//
+
 //struct BlockView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        let _: ProjectData = ProjectData(

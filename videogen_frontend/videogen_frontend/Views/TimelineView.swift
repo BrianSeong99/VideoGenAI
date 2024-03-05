@@ -34,10 +34,8 @@ struct TimelineView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
             } else {
                 Text(titleText)
-                    .font(.largeTitle)
             }
         }
-        .padding()
 
     }
     
@@ -77,6 +75,7 @@ struct TimelineView: View {
                             self.projectData!.blocks.move(fromOffsets: from, toOffset: to)
                         }
                     }
+                    .listStyle(PlainListStyle())
                     Divider()
                     Spacer()
                     SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: promptSubmitted)

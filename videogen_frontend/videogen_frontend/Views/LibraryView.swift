@@ -107,7 +107,7 @@ struct LibraryView: View {
                 VStack() {
                     SearchBarComponent(text: $searchText, displayText: "Search with Keywords", onSubmit: searchLibraryWithText)
                     ScrollView {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 2) {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 10) {
                             ForEach(0..<AssetLibrary.count, id: \.self) { index in
                                 VideoTileComponent(
                                     videoURL: Binding(
