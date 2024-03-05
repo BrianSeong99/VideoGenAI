@@ -35,9 +35,9 @@ struct ProjectsView: View {
     
     private func projectTileComponent(currentIndex: Int, leftOrRight: Bool) -> some View {
         let projectData = leftOrRight ? self.projectList_left[currentIndex] : self.projectList_right[currentIndex]
-        let defaultThumbnailURL = "https://res.cloudinary.com/demtzsiln/video/upload/v1708079752/s6gl22ltwnnoxgppbhgc.jpg"
+        let thumbnail_url: String = projectData.blocks[0].matches?[0].metadata.url ?? "https://res.cloudinary.com/demtzsiln/video/upload/v1708079752/s6gl22ltwnnoxgppbhgc.jpg"
         return ProjectTileComponent(
-                thumbnail_url: URL(string: projectData.thumbnail_url) ?? URL(string: defaultThumbnailURL)!,
+            thumbnail_url: URL(string: thumbnail_url)!,
                 project_title: projectData.project_title,
                 project_id: projectData._id,
                 projectListModel: projectListModel,
@@ -46,11 +46,9 @@ struct ProjectsView: View {
         .onTapGesture {
             // jump to project details page (Timeline Page)
             print("tapped \(leftOrRight)")
-            print(currentIndex)
             self.insertedIdForTimelineView = leftOrRight ? self.projectList_left[currentIndex]._id : self.projectList_right[currentIndex]._id
             projectListModel.getProject(project_id: self.insertedIdForTimelineView!) { projectData in
                 if let projectData = projectData {
-                    print(projectData)
                     self.navigateToTimelineViewProjectData = projectData
                     self.navigateToTimelineView = true
                     print("Project Fetch Success")
@@ -96,7 +94,6 @@ struct ProjectsView: View {
                             self.isCreateProjectWindowPresented = false
                             projectListModel.getProject(project_id: self.insertedIdForTimelineView!) { projectData in
                                 if let projectData = projectData {
-                                    print(projectData)
                                     self.navigateToTimelineViewProjectData = projectData
                                     self.navigateToTimelineView = true
                                     print("Project Fetch Success")
@@ -108,7 +105,6 @@ struct ProjectsView: View {
                     }
             }
             .onAppear {
-                print("h")
                 projectListModel.getProjectList() {
                     _projects in
                     projectList = _projects
@@ -126,7 +122,6 @@ struct ProjectsView: View {
             .onChange(of: projectList) { _, _ in
                 self.projectList_left = projectList.enumerated().compactMap { $0.offset % 2 == 0 ? $0.element : nil }
                 self.projectList_right = projectList.enumerated().compactMap { $0.offset % 2 != 0 ? $0.element : nil }
-                print(self.projectList_left.count, self.projectList_right.count)
                 isFetchingMore = false
             }
             .navigationBarTitle("Projects", displayMode: .inline)

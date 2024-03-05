@@ -11,56 +11,56 @@ struct BlockView: View {
     @Binding var block_id: String
     @Binding private var promptString: String
     @Binding var blockIndex: Int
-    @Binding var blockData: BlockData
     let project_id: String
     @State var projectData: ProjectData? = nil
+    
+    @State var isUpdate: Bool = false
     
     @StateObject var blockModel: BlockModel = BlockModel()
     @StateObject var projectListModel: ProjectListModel = ProjectListModel()
         
-    init(project_id: String, blockIndex: Binding<Int>, block_id: Binding<String>, promptString: Binding<String>, blockData: Binding<BlockData>) {
+    init(project_id: String, blockIndex: Binding<Int>, block_id: Binding<String>, promptString: Binding<String>) {
         self._block_id = block_id
         self._promptString = promptString
         self._blockIndex = blockIndex
-        self._blockData = blockData
         self.project_id = project_id
     }
     
     private func replaceVideoExtensionWithJPG(for urlString: String) -> String {
-        print(urlString)
         var returnString = urlString
         if urlString.hasSuffix(".mp4") {
             returnString = urlString.replacingOccurrences(of: ".mp4", with: ".jpg")
         } else if urlString.hasSuffix(".mov") {
-            print("before", returnString)
             returnString = urlString.replacingOccurrences(of: ".mov", with: ".jpg")
-            print("after", returnString)
         }
-        print(returnString)
         return returnString
     }
     
     private func searchVideosWithPrompt() {
         print("Searching for: \(promptString)")
-        self.blockData.prompt = promptString
-        self.blockModel.searchWithPrompt(prompt: self.blockData.prompt) { matches in
+        self.projectData!.blocks[blockIndex].prompt = promptString
+        self.blockModel.searchWithPrompt(prompt: self.projectData!.blocks[blockIndex].prompt) { matches in
             DispatchQueue.main.async {
                 if let matches = matches {
-                    self.blockData.matches = matches
+                    self.projectData!.blocks[blockIndex].matches = matches
                 }
             }
         }
     }
     
     private func deleteRow(at offsets: IndexSet) {
-        self.blockData.matches?.remove(atOffsets: offsets)
+        print("offsets", offsets)
+        print(self.projectData!.blocks[blockIndex].matches?.count)
+        self.projectData!.blocks[blockIndex].matches?.remove(atOffsets: offsets)
+        print(self.projectData!.blocks[blockIndex].matches?.count)
+        isUpdate = true
     }
     
     var body: some View {
         VStack {
             SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: searchVideosWithPrompt)
             List {
-                ForEach(blockData.matches!, id: \.id) { match in
+                ForEach(projectData?.blocks[blockIndex].matches! ?? [], id: \.id) { match in
                     PromptResultRowComponent(
                         videoURL: URL(string: match.metadata.url) ?? URL(string: "https://example.com")!,
                         score: Float(match.score),
@@ -69,35 +69,42 @@ struct BlockView: View {
                 }
                 .onDelete(perform: deleteRow)
                 .onMove { from, to in
-                    self.blockData.matches?.move(fromOffsets: from, toOffset: to)
+                    self.projectData!.blocks[blockIndex].matches?.move(fromOffsets: from, toOffset: to)
+                    isUpdate = true
                 }
-                .onChange(of: self.blockData.matches) {
-                    if (self.blockData.matches != nil && self.blockData.matches!.count > 0) {
-                        self.projectData!.thumbnail_url = replaceVideoExtensionWithJPG(
-                            for: self.blockData.matches![0].metadata.url)
+                .onChange(of: isUpdate) {
+                    if (isUpdate) {
+                        if (self.projectData!.blocks[blockIndex].matches != nil && self.projectData!.blocks[blockIndex].matches!.count > 0) {
+                            self.projectData!.thumbnail_url = replaceVideoExtensionWithJPG(
+                                for: self.projectData!.blocks[blockIndex].matches![0].metadata.url)
+                        }
+                        if (self.projectData?.blocks.count ?? 0 <= blockIndex) {
+                            self.projectData?.blocks.append(self.projectData!.blocks[blockIndex])
+                        } else {
+                            self.projectData?.blocks[blockIndex] = self.projectData!.blocks[blockIndex]
+                        }
+                        projectListModel.updateProject(projectData: self.projectData!) {
+                            isUpdate = false
+                            projectListModel.getProject(project_id: project_id) {
+                                newProjectData in
+                                self.projectData = newProjectData
+                            }
+                        }
                     }
-                    if (self.projectData?.blocks.count ?? 0 <= blockIndex) {
-                        self.projectData?.blocks.append(self.blockData)
-                    } else {
-                        self.projectData?.blocks[blockIndex] = self.blockData
+                }
+            }
+            .onAppear() {
+                projectListModel.getProject(project_id: project_id) {
+                    newProjectData in
+                    self.projectData = newProjectData
+                    print("projectData updated")
+                    if (self.projectData!.blocks[blockIndex].matches! == []) {
+                        searchVideosWithPrompt()
                     }
-                    print("prepared!", self.projectData!)
-                    // TODO, projectData's block is always empty!
-                    projectListModel.updateProject(projectData: self.projectData!)
                 }
             }
             .listStyle(PlainListStyle())
             Spacer()
-                .onAppear() {
-                    projectListModel.getProject(project_id: project_id) {
-                        newProjectData in
-                        self.projectData = newProjectData
-                        print("appear here")
-                    }
-                    if (self.blockData.matches! == []) {
-                        searchVideosWithPrompt()
-                    }
-                }
         }
     }
 }

@@ -74,8 +74,7 @@ struct TimelineView: View {
                             project_id: projectId,
                             blockIndex: .constant(index),
                             block_id: .constant(block.block_id),
-                            promptString: .constant(block.prompt),
-                            blockData: .constant(block)
+                            promptString: .constant(block.prompt)
                         )) {
                             BlockRowComponent(blockData: block)
                         }
@@ -91,13 +90,11 @@ struct TimelineView: View {
             SearchBarComponent(text: $promptString, displayText: "Search with Prompt", onSubmit: promptSubmitted)
         }
         .onAppear() {
-            print("blockview", projectData!)
             self.titleText = projectData!.project_title
             self.blockIndex = projectData!.blocks.count
             projectListModel.getProject(project_id: projectId) {
                 newProjectData in
                 self.projectData = newProjectData
-                print("appear here")
             }
         }
         Spacer()
@@ -113,7 +110,9 @@ struct TimelineView: View {
             leading: EditableTitle
         )
         .onChange(of: projectData) { _, _ in
-            projectListModel.updateProject(projectData: projectData!)
+            projectListModel.updateProject(projectData: projectData!) {
+                
+            }
         }
         .onChange(of: isEditing) { _, _ in
             projectData!.project_title = titleText
@@ -123,8 +122,7 @@ struct TimelineView: View {
                 project_id: projectId,
                 blockIndex: $blockIndex,
                 block_id: $block_id,
-                promptString: $promptString,
-                blockData: $blockData
+                promptString: $promptString
             ), isActive: $navigateToBlockView) {
                 EmptyView()
             }

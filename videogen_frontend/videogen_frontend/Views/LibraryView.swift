@@ -41,17 +41,13 @@ struct LibraryView: View {
             Label("Add Item", systemImage: "plus")
         }
         .onChange(of: photosPickerSelections) { _, _ in
-            print("changed")
             Task {
-                print("here")
                 var video_list: [Data] = [];
                 for photosPickerItem in photosPickerSelections {
                     if let data = try? await photosPickerItem.loadTransferable(type: Data.self) {
                         video_list.append(data)
-                        print("here1")
                     }
                 }
-                print("video_list len:", video_list)
                 uploadViewModel.uploadVideos(video_list: video_list)
             }
         }
@@ -61,10 +57,8 @@ struct LibraryView: View {
         Button(action: {
             var public_ids: [String] = []
             for index in selectedVideoIndexes {
-                print(AssetLibrary[index])
                 public_ids.append(AssetLibrary[index].public_id)
             }
-            print(public_ids)
             libraryListModel.deleteSelectedVideos(deleteList: public_ids)
         }) {
             Image(systemName: "trash")
@@ -124,13 +118,11 @@ struct LibraryView: View {
                                             selectedVideoIndexes.remove(index)
                                         } else {
                                             selectedVideoIndexes.insert(index)
-                                            print(selectedVideoIndexes);
                                         }
                                     }
                                 }
                                 .onAppear {
                                     if index == AssetLibrary.count - 1 {
-                                        print(index)
                                         loadMoreContentIfNeeded()
                                     }
                                 }

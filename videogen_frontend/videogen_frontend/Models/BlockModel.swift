@@ -23,7 +23,6 @@ class BlockModel: ObservableObject {
                 switch response.result {
                 case .success(let searchResponse):
                     DispatchQueue.main.async {
-                        print(searchResponse)
                         self?.matches = searchResponse.matches
                         completion(searchResponse.matches)
                     }

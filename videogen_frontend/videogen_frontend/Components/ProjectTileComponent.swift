@@ -64,17 +64,9 @@ struct ProjectTileComponent: View {
                 .padding(8)
             }
             .contextMenu {
-//                Button(action: {
-//                    print("Export Project")
-//                }) {
-//                    Text("Export Project")
-//                    Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
-//                }
-                
                 Button(action: {
                     print("Remove Project")
                     projectListModel.deleteSelectedProject(delete_id: project_id) {
-                        print("RefreshLIST here")
                         refreshList = true
                     }
                 }) {

@@ -21,7 +21,6 @@ class ProjectListModel: ObservableObject {
             .responseDecodable(of: ProjectData.self) { response in
                 switch response.result {
                 case .success(let projectData):
-                    print("getProject", projectData)
                     completion(projectData)
                 case .failure(let error):
                     print(error)
@@ -42,7 +41,6 @@ class ProjectListModel: ObservableObject {
                 case .success(let projectListResponse):
                     self.totalCount = projectListResponse.totalCount;
                     completion(projectListResponse.projects)
-                    print("first", projectListResponse.projects.count)
                     if projectListResponse.projects.count < limit {
                         print("No more pages.")
                     } else {
@@ -105,7 +103,7 @@ class ProjectListModel: ObservableObject {
             }
     }
 
-    func updateProject(projectData: ProjectData) {
+    func updateProject(projectData: ProjectData, completion: @escaping () -> Void) {
         let encoder = JSONEncoder()
             encoder.dateEncodingStrategy = .secondsSince1970 // Adjust this based on your date format needs
 
@@ -125,6 +123,7 @@ class ProjectListModel: ObservableObject {
                         switch response.result {
                         case .success:
                             print("Update success")
+                            completion()
                         case .failure(let error):
                             print("Update failed: \(error)")
                         }
@@ -132,30 +131,5 @@ class ProjectListModel: ObservableObject {
             } catch {
                 print("Encoding failed: \(error)")
             }
-        
-        //        let parameters: Parameters = [
-//            "_id": projectData._id,
-//            "project_title": projectData.project_title,
-//            "created_at": projectData.created_at,
-//            "thumbnail_url": projectData.thumbnail_url,
-//            "blocks": []//projectData.blocks
-//        ]
-////        print(projectData.blocks)
-//        let headers: HTTPHeaders = [
-//            "Content-Type": "application/json"
-//        ]
-//        let urlString = "http://34.125.61.118:5000/v1/projects"
-//        AF.request(urlString, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-//            .validate()
-//            .responseData { response in
-//                switch response.result {
-//                case .success:
-//                    print("update success")
-//                case .failure(let error):
-//                    print("update failed")
-//                    print(error)
-//                }
-//            }
-
     }
 }

@@ -25,7 +25,6 @@ class LibraryListModel: ObservableObject {
                     if (next_page) {
                         DispatchQueue.main.async {
                             self.videos.append(contentsOf: videoLibraryResponse.resources)
-                            print("continue", videoLibraryResponse.resources.count)
                             if let nextCursor = videoLibraryResponse.next_cursor, !nextCursor.isEmpty {
                                 self.next_cursor = nextCursor
                                 print("Next cursor: \(nextCursor)")
@@ -37,7 +36,6 @@ class LibraryListModel: ObservableObject {
                     } else {
                         DispatchQueue.main.async {
                             self.videos = videoLibraryResponse.resources
-                            print("first", videoLibraryResponse.resources.count, videoLibraryResponse)
                             if let nextCursor = videoLibraryResponse.next_cursor, !nextCursor.isEmpty {
                                 self.next_cursor = nextCursor
                                 print("Next cursor: \(nextCursor)")
@@ -82,7 +80,6 @@ class LibraryListModel: ObservableObject {
         }
         keywords.append("resource_type:video")
         let expression = keywords.joined(separator: " AND ")
-        print(expression)
         let baseString = "http://34.125.61.118:5000/v1/library/search"
         let urlString = "\(baseString)?expression=\(expression)&max_results=\(max_results)"
         AF.request(urlString)
@@ -90,11 +87,8 @@ class LibraryListModel: ObservableObject {
             .responseDecodable(of: SearchVideoResponse.self) { response in
                 switch response.result {
                 case .success(let searchVideoResponse):
-                    print(searchVideoResponse.resources)
                     DispatchQueue.main.async {
                         self.videos = searchVideoResponse.resources
-                        print("videos", self.videos)
-                        print("first search", searchVideoResponse.resources.count, searchVideoResponse.resources)
                         if let nextCursor = searchVideoResponse.next_cursor, !nextCursor.isEmpty {
                             self.next_cursor = nextCursor
                             print("Next cursor: \(nextCursor)")
