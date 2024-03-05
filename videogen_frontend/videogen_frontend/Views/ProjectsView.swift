@@ -20,6 +20,8 @@ struct ProjectsView: View {
     @State private var navigateToTimelineViewProjectData: ProjectData? = nil
     @State private var defaultProjectData = ProjectData.placeholder
     
+    @State private var refreshList = false
+    
     private func loadMoreContentIfNeeded() {
         if (projectListModel.totalCount > projectList_left.count + projectList_right.count) {
             guard !isFetchingMore else { return }
@@ -38,7 +40,8 @@ struct ProjectsView: View {
                 thumbnail_url: URL(string: projectData.thumbnail_url) ?? URL(string: defaultThumbnailURL)!,
                 project_title: projectData.project_title,
                 project_id: projectData._id,
-                projectListModel: projectListModel
+                projectListModel: projectListModel,
+                refreshList: $refreshList
             )
         .onTapGesture {
             // jump to project details page (Timeline Page)
@@ -109,6 +112,15 @@ struct ProjectsView: View {
                 projectListModel.getProjectList() {
                     _projects in
                     projectList = _projects
+                }
+            }
+            .onChange(of: refreshList) { _, _ in
+                if (refreshList) {
+                    projectListModel.getProjectList() {
+                        _projects in
+                        projectList = _projects
+                    }
+                    refreshList = false
                 }
             }
             .onChange(of: projectList) { _, _ in

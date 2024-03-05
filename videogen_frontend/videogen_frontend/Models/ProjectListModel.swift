@@ -54,7 +54,7 @@ class ProjectListModel: ObservableObject {
             }
     }
     
-    func deleteSelectedProject(delete_id: String) {
+    func deleteSelectedProject(delete_id: String, completion: @escaping () -> Void) {
         let parameters: Parameters = [
             "_id": delete_id
         ]
@@ -68,6 +68,7 @@ class ProjectListModel: ObservableObject {
                 switch response.result {
                 case .success:
                     print("delete success")
+                    completion()
 //                    self.getProjectList() { _projects in
 //                        self.projects = _projects
 //                    }

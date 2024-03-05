@@ -63,7 +63,8 @@ struct BlockView: View {
                 ForEach(blockData.matches!, id: \.id) { match in
                     PromptResultRowComponent(
                         videoURL: URL(string: match.metadata.url) ?? URL(string: "https://example.com")!,
-                        score: Float(match.score)
+                        score: Float(match.score),
+                        tags: match.metadata.tags!
                     )
                 }
                 .onDelete(perform: deleteRow)

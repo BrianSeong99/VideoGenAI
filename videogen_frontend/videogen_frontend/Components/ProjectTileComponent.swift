@@ -11,18 +11,20 @@ struct ProjectTileComponent: View {
     
     @State private var scaleFactor: CGFloat
     @State private var isMagnified: Bool
+    @Binding var refreshList: Bool
     var projectListModel: ProjectListModel
     let thumbnail_url: URL
     let project_title: String
     let project_id: String
     
-    public init(thumbnail_url: URL, project_title: String, project_id: String, projectListModel: ProjectListModel) {
+    public init(thumbnail_url: URL, project_title: String, project_id: String, projectListModel: ProjectListModel, refreshList: Binding<Bool>) {
         self.thumbnail_url = thumbnail_url
         self._scaleFactor = State(initialValue: 1.0)
         self._isMagnified = State(initialValue: false)
         self.project_title = project_title
         self.project_id = project_id
         self.projectListModel = projectListModel
+        self._refreshList = refreshList
     }
     
     private func toThumbnailURL(url: URL) -> URL {
@@ -71,7 +73,10 @@ struct ProjectTileComponent: View {
                 
                 Button(action: {
                     print("Remove Project")
-                    projectListModel.deleteSelectedProject(delete_id: project_id)
+                    projectListModel.deleteSelectedProject(delete_id: project_id) {
+                        print("RefreshLIST here")
+                        refreshList = true
+                    }
                 }) {
                     Text("Remove")
                     Image(systemName: "trash")

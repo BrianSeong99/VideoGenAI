@@ -56,30 +56,24 @@ struct BlockRowComponent: View {
         VStack{
             HStack{
                 Text("Prompt")
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, 10)
+                    .padding(.vertical, 2)
+                    .padding(.horizontal, 5)
                     .background(Color.green)
                     .foregroundColor(.white)
-                    .cornerRadius(10)
+                    .cornerRadius(5)
                 Text(blockData.prompt)
                     .bold()
-                    .font(.title2)
+                    .font(.title3)
                     .lineLimit(1)
                     .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
             }
             .padding(.horizontal, 10)
             Divider()
-                .padding(.vertical, 5)
+                .padding(.vertical, 1)
                 .padding(.horizontal, 5)
             HStack{
-                Text("Response")
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, 10)
-                    .background(Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
                 ScrollView(.horizontal) {
-                    HStack(spacing: 20) {
+                    HStack(spacing: 10) {
                         ForEach(0..<(self.blockData.matches?.count ?? 0), id: \.self) { index in
                             if let urlString = blockData.matches?[index].metadata.url, let validURL = URL(string: urlString) {
                                 AsyncImage(url: toThumbnailURL(url: validURL)) { phase in
@@ -119,8 +113,8 @@ struct BlockRowComponent: View {
             }
             .padding(.horizontal, 10)
         }
-        .padding(.vertical, 15)
-        .background(RoundedRectangle(cornerRadius: 10)
+        .padding(.vertical, 10)
+        .background(RoundedRectangle(cornerRadius: 5)
             .fill(Color.white)
             .shadow(color: .gray, radius: 5, x: 0, y: 2))
         .padding(.horizontal, 10)
