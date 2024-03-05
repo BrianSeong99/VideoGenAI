@@ -142,13 +142,13 @@ struct LibraryView: View {
                         .progressViewStyle(LinearProgressViewStyle())
                         .frame(width: 200)
                         .padding()
-                        .background(Color.secondary.colorInvert().opacity(0.8))
+                        .background(Color.white)
                         .foregroundColor(.primary)
                         .cornerRadius(10)
                         .shadow(radius: 10)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.primary, lineWidth: 2)
+                                .stroke(Color.black, lineWidth: 1)
                         )
                 }
             }
@@ -165,6 +165,11 @@ struct LibraryView: View {
             self.AssetLibrary = libraryListModel.videos
             selectedVideoIndexes.removeAll()
             isFetchingMore = false
+        }
+        .onChange(of: uploadViewModel.isUploading) {
+            if (uploadViewModel.isUploading == false) {
+                libraryListModel.getAllVideoList(next_page: false)
+            }
         }
     }
 }

@@ -150,10 +150,16 @@ struct TimelineView: View {
                     Image(systemName: "play.circle")
                 }
                 Button(action: {
-                    // do sth, preview
+                    let fullVideoList = getFullVideoList()
+    
+                    let result = ShareLink(item: fullVideoList[0])
+                    // TODO finish share video function
+                    
+                    print(result)
                 }) {
                     Image(systemName: "square.and.arrow.up")
                 }
+
             }
         }
         .navigationBarItems(
