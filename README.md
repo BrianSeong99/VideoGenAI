@@ -1,6 +1,10 @@
 # VideoGenAI
 An AI-driven tool that suggests relevant footage for certain frame descriptions by automatically organizing/ summarizing/ tagging/ selecting video footage on mobile phone to assist video creation.
 
+- [Project Introduction Video](https://drive.google.com/file/d/1AyiP8GEQCJY1lPvCdcWaGOoItRfBml5f/view?usp=sharing)
+- [Demo Video](https://drive.google.com/file/d/13xYiv4tF0TFChq-FWNaDlC_DhihoemfS/view?usp=sharing)
+
+## Setup
 Setup Environment:
 ```bash
 cd videogen_backend
@@ -14,6 +18,9 @@ flask --app app.py run # locally
 python3 -m flask --app app.py run --host 0.0.0.0 -p 5000 # server
 ```
 
+Frontend:
+- Just open the frontend folder in xcode. Remember to install ios simulator, 16+ is recommended.
+
 ## Features to includes
 
 ### v0.1
@@ -25,7 +32,7 @@ Infrastructure:
 - [x] [Backend]: Indexer for video data indexing
 - [x] [Backend]: NLP searching of relevant footage with indexer
 - [x] [Backend]: Database for editing progress
-- [ ] [Backend]: Generate Video Summary
+- [-] [Backend]: Generate Video Summary
 
 Library Page:
 - [x] [Backend]: Return all assets for Library via Pagination
